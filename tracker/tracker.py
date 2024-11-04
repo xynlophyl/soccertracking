@@ -9,16 +9,16 @@ class Tracker():
     object detection model with tracking
     """
 
-    def __init__(self, model_path):
+    def __init__(self, model_path: str):
         
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
 
     def detect_frames(
-        self,
-        frames: list,
-        batch_size: int = 32,
-    ):
+            self,
+            frames: list,
+            batch_size: int = 32,
+        ):
         """
         get detection bboxes using trained YOLO model 
         """
@@ -38,12 +38,12 @@ class Tracker():
         return detections
 
     def get_object_tracks(
-        self, 
-        frames: list, 
-        remap_gk: bool = True,
-        read_from_stub: bool = False,
-        stubpath: str = None
-    ):
+            self, 
+            frames: list, 
+            remap_gk: bool = True,
+            read_from_stub: bool = False,
+            stubpath: str = None
+        ):
 
         """
         assigns tracking for each detected object in video across across each frame, with conditional remapping of goalkeepers to general player class
@@ -113,3 +113,11 @@ class Tracker():
                 pickle.dump(tracks, f)
 
         return tracks
+    
+    def draw_annotations():
+
+        """
+        draw custom annotations using bbox detections
+        """
+
+        pass
