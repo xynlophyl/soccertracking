@@ -1,10 +1,44 @@
 import cv2
+import json
 import os
 from tqdm import tqdm
-import warnings
 import uuid
-import json
-import subprocess
+
+def read_video(video_path: str):
+
+    """
+    load video as invididual frames
+    """
+
+    cap = cv2.VideoCapture(video_path)
+    frames = []
+
+    while True:
+        ret, frame = cap.read()
+        if not ret:
+            break
+        frames.append(frame)
+
+    return frames
+
+def save_video(frames: list, outpath: str):
+
+    """
+    stitch frames into video output
+    """
+
+    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    out = cv2.VideoWriter(
+        outpath,
+        fourcc,
+        24,
+        (frames[0].shape[1], frames[[0].shape[1]])
+    )
+
+    for frame in frames:
+        out.write(frame)
+    
+    out.release()
 
 def generate_uuid() -> str:
 
@@ -14,10 +48,7 @@ def generate_uuid() -> str:
 
     return uuid.uuid4().hex
 
-def create_manifest(
-    metadata: dict, 
-    outpath: str
-) -> None:
+def create_manifest(metadata: dict, outpath: str) -> None:
     
     """
     create manifest file to store chunk metadata for reconstruction
@@ -30,17 +61,11 @@ def create_manifest(
             indent = 4
         )
 
-def split_vod(
-    input_path: str, 
-    outpath: str, 
-    duration: int = 30
-) -> None:
+def split_vod(input_path: str, outpath: str, duration: int = 30) -> None:
     
     """
     splits match vod into smaller video chunks (default 30s)
     """
-
-    warnings.filterwarnings("ignore")
 
     # check if outpath exists
     if not os.path.exists(outpath):
@@ -124,9 +149,7 @@ def split_vod(
     create_manifest(metadata, manifest_path)
 
 # TODO: implement vod construction with chunks and metadata 
-def reconstruct_vod(
-    manifest_file: str
-):
+def reconstruct_vod(manifest_file: str):
 
     """
     reconstruct full vod using shards and metadata
@@ -135,9 +158,11 @@ def reconstruct_vod(
     """
 
     pass
-    
-split_vod(
-    './assets/match_vods/test_vod.mp4',
-    './assets/vod_chunks/',
-    duration=30
-)
+
+
+if __name__ == '__main__':  
+    split_vod(
+        './assets/match_vods/test_vod.mp4',
+        './assets/vod_chunks/',
+        duration=30
+    )
