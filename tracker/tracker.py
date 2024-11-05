@@ -14,11 +14,7 @@ class Tracker():
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
 
-    def detect_frames(
-            self,
-            frames: list,
-            batch_size: int = 32,
-        ):
+    def detect_frames(self, frames: list, batch_size: int = 32):
         """
         get detection bboxes using trained YOLO model 
         """
@@ -64,7 +60,7 @@ class Tracker():
 
         detections = self.detect_frames(frames)
 
-        for f, detection in enumerate(detections):
+        for frame_id, detection in enumerate(detections):
 
             cls_names = detection.names
             cls_names_inv = {v:k for k,v in cls_names.items()}
@@ -95,10 +91,10 @@ class Tracker():
                 track_id = frame_detection[4]
 
                 if cls_id == cls_names_inv["player"]:
-                    tracks["players"][f][track_id] = {"bbox": bbox}
+                    tracks["players"][frame_id][track_id] = {"bbox": bbox}
                 
                 if cls_id == cls_names_inv["referee"]:
-                    tracks["referees"][f][track_id] = {"bbox": bbox}
+                    tracks["referees"][frame_id][track_id] = {"bbox": bbox}
 
             # tracking ball
             for frame_detection in detections_sv:
@@ -106,7 +102,7 @@ class Tracker():
                 cls_id = frame_detection[3]
 
                 if cls_id == cls_names_inv["ball"]:
-                    tracks["ball"][f][0] = {"bbox": bbox}
+                    tracks["ball"][frame_id][0] = {"bbox": bbox}
 
         if stubpath is not None:
             with open(stubpath, 'wb') as f:
@@ -117,7 +113,26 @@ class Tracker():
     def draw_annotations():
 
         """
-        draw custom annotations using bbox detections
+        TODO: draw custom annotations using bbox detections
         """
 
         pass
+
+    def draw_annotations(self, frames: list, tracks: list):
+
+        """
+        simple bounding box annotation
+        """
+
+        output_frames = []
+
+        for frame_id, frame in enumerate(frames):
+
+            frame = frame.copy()
+
+            player_dict = tracks["players"][frame_id]
+            referee_dict = tracks["referees"][frame_id]
+            ball_dict = tracks["ball"][frame_id]
+            
+            for track_id, player in player_dict.items():
+                x1, y1, x2, y2 = player['bbox']
