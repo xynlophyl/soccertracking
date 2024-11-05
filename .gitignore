@@ -4,3 +4,9 @@
 
 # cache
 **pycache**
+
+# venv
+venv
+
+# other
+.vscode
