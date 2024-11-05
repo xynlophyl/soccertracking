@@ -110,18 +110,10 @@ class Tracker():
 
         return tracks
     
-    def draw_annotations():
-
-        """
-        TODO: draw custom annotations using bbox detections
-        """
-
-        pass
-
     def draw_annotations(self, frames: list, tracks: list):
 
         """
-        simple bounding box annotation
+        draw custom annotations using bbox detections
         """
 
         output_frames = []
@@ -136,3 +128,5 @@ class Tracker():
             
             for track_id, player in player_dict.items():
                 x1, y1, x2, y2 = player['bbox']
+
+        # TODO: finish implementing annotations for visualizing detection boxes
