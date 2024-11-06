@@ -1,6 +1,8 @@
-# model weights
-*models*
-*weights*
+# model weights and outputs
+models
+weights
+stubs
+outputs
 
 # cache
 **pycache**

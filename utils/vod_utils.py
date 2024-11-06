@@ -27,12 +27,12 @@ def save_video(frames: list, outpath: str):
     stitch frames into video output
     """
 
-    fourcc = cv2.VideoWriter_fourcc(*'mp4v')
+    fourcc = cv2.VideoWriter_fourcc(*'XVID')
     out = cv2.VideoWriter(
         outpath,
         fourcc,
         24,
-        (frames[0].shape[1], frames[[0].shape[1]])
+        (frames[0].shape[1], frames[0].shape[0])
     )
 
     for frame in frames:
@@ -158,11 +158,3 @@ def reconstruct_vod(manifest_file: str):
     """
 
     pass
-
-
-if __name__ == '__main__':  
-    split_vod(
-        './assets/match_vods/test_vod.mp4',
-        './assets/vod_chunks/',
-        duration=30
-    )
