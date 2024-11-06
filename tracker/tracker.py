@@ -1,7 +1,10 @@
 from ultralytics import YOLO
 import supervision as sv
 import os
+import pandas as pd
 import pickle
+
+# TODO: add type hints
 
 class Tracker():
 
@@ -9,12 +12,12 @@ class Tracker():
     object detection model with tracking
     """
 
-    def __init__(self, model_path: str):
+    def __init__(self, model_path: str) -> None:
         
         self.model = YOLO(model_path)
         self.tracker = sv.ByteTrack()
 
-    def detect_frames(self, frames: list, batch_size: int = 32):
+    def detect_frames(self, frames: list, batch_size: int = 32) -> list:
         """
         get detection bboxes using trained YOLO model 
         """
@@ -39,7 +42,7 @@ class Tracker():
             remap_gk: bool = True,
             read_from_stub: bool = False,
             stubpath: str = None
-        ):
+        ) -> list:
 
         """
         assigns tracking for each detected object in video across across each frame, with conditional remapping of goalkeepers to general player class
@@ -110,6 +113,25 @@ class Tracker():
 
         return tracks
     
+    def interpolate_ball(self, ball_positions: list) -> list:
+
+        """
+        estimate untracked ball positions using linear interpolation and backfilling
+        """
+
+        ball_positions = [
+            x.get(1, {}).get('bbox',[]) for x in ball_positions
+        ]
+        
+        # interpolate using pandas
+        df_ball_positions = pd.DataFrame(ball_positions, columns = ['x1', 'y1', 'x2', 'y2'])
+        df_ball_positions = df_ball_positions.interpolate()
+        df_ball_positions = df_ball_positions.bfill()
+
+        # convert back to array of dictionaries
+        updated_ball_positions = [{1:{"bbox": x}} for x in df_ball_positions.to_numpy().tolist()]
+        return updated_ball_positions
+
     def draw_annotations(self, frames: list, tracks: list):
 
         """
