@@ -114,8 +114,9 @@ class Tracker():
                 cls_id = frame_detection[3]
 
                 if cls_id == cls_names_inv["ball"]:
-                    tracks["ball"][frame_num][0] = {"bbox": bbox}
+                    tracks["ball"][frame_num][1] = {"bbox": bbox}
 
+        # save tracking data
         if stub_path is not None:
             with open(stub_path, 'wb') as f:
                 pickle.dump(tracks, f)
@@ -284,9 +285,13 @@ class Tracker():
             referee_dict = tracks["referees"][frame_num]
             ball_dict = tracks["ball"][frame_num]
 
-            # add annotation for players (red)
-            player_color = (0,0,255)
+            # add annotation for players
             for track_id, player in player_dict.items():
+                if player.get("has_ball", False):
+                    player_color = (255,255,255) # if player has ball, white highlight
+                else:
+                    player_color = (0, 0, 255) # other players: red highlight
+
                 frame = self.draw_ellipse(frame, player['bbox'], player_color)
                 frame = self.draw_rectangle(frame, player['bbox'], player_color, track_id)
 

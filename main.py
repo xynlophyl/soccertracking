@@ -1,5 +1,4 @@
 from tracker import Tracker, PlayerBallAssigner
-from tracker import Tracker
 from utils import read_video, save_video
 
 def main():
@@ -17,9 +16,9 @@ def main():
     # track detections for each object across frames
     tracks = tracker.get_object_tracks(
         vod_frames,
-        read_from_stub=True,
+        read_from_stub = True,
         stub_path = "./stubs/track_stubs.pkl"
-    ) 
+    )
 
     # interpolate ball positions
     tracks['ball'] = tracker.interpolate_ball(tracks['ball'])
