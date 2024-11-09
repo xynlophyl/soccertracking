@@ -288,9 +288,9 @@ class Tracker():
             # add annotation for players
             for track_id, player in player_dict.items():
                 if player.get("has_ball", False):
-                    player_color = (255,255,255) # if player has ball, white highlight
+                    player_color = (255,0,0) # if player has ball, blue highlight
                 else:
-                    player_color = (0, 0, 255) # other players: red highlight
+                    player_color = player.get("team_color",(0,0,255)) # other players, team color
 
                 frame = self.draw_ellipse(frame, player['bbox'], player_color)
                 frame = self.draw_rectangle(frame, player['bbox'], player_color, track_id)
