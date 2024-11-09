@@ -13,3 +13,4 @@ venv
 
 # other
 .vscode
+.DS_Store
