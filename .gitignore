@@ -3,6 +3,7 @@ models
 weights
 stubs
 outputs
+input_videos
 
 # cache
 **pycache**
