@@ -40,7 +40,6 @@ class TeamAssigner:
 
 
     def assign_team_color(self,frame, player_detections):
-        
         player_colors = []
         for _, player_detection in player_detections.items():
             if "cls_name" in player_detection and player_detection["cls_name"] == "player":

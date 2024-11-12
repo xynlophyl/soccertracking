@@ -7,7 +7,7 @@ def main():
     # read video
     print('loading video')
     # vod_frames = read_video("sample_vod.mp4")
-    vod_frames = read_video("input_videos/08fd33_4.mp4")
+    vod_frames = read_video("input_videos/121364_0.mp4")
 
     print('adding detections')
     # init tracker
@@ -20,7 +20,7 @@ def main():
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub = True,
-        stub_path = "./stubs/track_stubs_new.pkl"
+        stub_path = "./stubs/track_stubs_121364_0.pkl"
     )
 
     # interpolate ball positions
@@ -42,6 +42,7 @@ def main():
         # estimated the goalkeeper's team based on the teams' centroids
         team_1_player_bboxes = list(map(lambda t: t[1]["bbox"], filter(lambda t: t[1]["cls_name"] == "player" and t[1]["team"] == 1, player_track.items())))
         team_2_player_bboxes = list(map(lambda t: t[1]["bbox"], filter(lambda t: t[1]["cls_name"] == "player" and t[1]["team"] == 2, player_track.items())))
+
         team_1_centroid = calculate_centroid(team_1_player_bboxes)
         team_2_centroid = calculate_centroid(team_2_player_bboxes)
         for player_id, track in player_track.items():
