@@ -7,7 +7,7 @@ def main():
     # read video
     print('loading video')
     # vod_frames = read_video("sample_vod.mp4")
-    vod_frames = read_video("input_videos//2e57b9_0.mp4")
+    vod_frames = read_video("input_videos/08fd33_4.mp4")
 
     print('adding detections')
     # init tracker
@@ -20,7 +20,7 @@ def main():
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub = True,
-        stub_path = "./stubs/track_stubs_2e57b9_0.pkl"
+        stub_path = "./stubs/track_stubs_new.pkl"
     )
 
     # interpolate ball positions
