@@ -69,6 +69,3 @@ class TeamAssigner:
         self.player_team_dict[player_id] = team_id
 
         return team_id
-    
-    def get_goalkeeper_team(self):
-        pass
