@@ -43,8 +43,8 @@ class Tracker():
         return all_detections
 
     def get_object_tracks(
-            self, 
-            frames: list, 
+            self,
+            frames: list,
             remap_gk: bool = True,
             read_from_stub: bool = False,
             stub_path: str = None
@@ -80,10 +80,10 @@ class Tracker():
             if remap_gk:
                 # convert goalkeeper to player object
                 for obj_idx, class_id in enumerate(detections_sv.class_id):
-                    
-                    if cls_names[class_id] == "goalkeeper":
-                        detections_sv.class_id[obj_idx] = cls_names_inv["player"]
-            
+                    pass
+                    # if cls_names[class_id] == "goalkeeper":
+                    #     detections_sv.class_id[obj_idx] = cls_names_inv["player"]
+
                 # update detection mappings
                 detection_with_tracks = self.tracker.update_with_detections(detections_sv)
 
@@ -102,9 +102,12 @@ class Tracker():
                 cls_id = frame_detection[3]
                 track_id = frame_detection[4]
 
+                if cls_id == cls_names_inv["goalkeeper"]:
+                    tracks["players"][frame_num][track_id] = {"bbox": bbox, "cls_name": "goalkeeper"}
+
                 if cls_id == cls_names_inv["player"]:
-                    tracks["players"][frame_num][track_id] = {"bbox": bbox}
-                
+                    tracks["players"][frame_num][track_id] = {"bbox": bbox, "cls_name": "player"}
+
                 if cls_id == cls_names_inv["referee"]:
                     tracks["referees"][frame_num][track_id] = {"bbox": bbox}
 

@@ -1,5 +1,5 @@
 from tracker import Tracker, PlayerBallAssigner
-from utils import read_video, save_video
+from utils import read_video, save_video, calculate_centroid, measure_distance, get_center_of_bbox
 from team_assigner import TeamAssigner
 
 def main():
@@ -7,7 +7,7 @@ def main():
     # read video
     print('loading video')
     # vod_frames = read_video("sample_vod.mp4")
-    vod_frames = read_video("input_videos//08fd33_4.mp4")
+    vod_frames = read_video("input_videos//2e57b9_0.mp4")
 
     print('adding detections')
     # init tracker
@@ -20,7 +20,7 @@ def main():
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub = True,
-        stub_path = "./stubs/track_stubs.pkl"
+        stub_path = "./stubs/track_stubs_2e57b9_0.pkl"
     )
 
     # interpolate ball positions
@@ -32,11 +32,30 @@ def main():
     team_assigner.assign_team_color(vod_frames[0], tracks['players'][0])
     for frame_num, player_track in enumerate(tracks['players']):
         for player_id, track in player_track.items():
-            team = team_assigner.get_player_team(vod_frames[frame_num],   
-                                                track['bbox'],
-                                                player_id)
-            tracks['players'][frame_num][player_id]['team'] = team 
-            tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[team]
+            if track["cls_name"] == "player":
+                team = team_assigner.get_player_team(vod_frames[frame_num],   
+                                                    track,
+                                                    player_id)
+                tracks['players'][frame_num][player_id]['team'] = team
+                tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[team]
+
+        # estimated the goalkeeper's team based on the teams' centroids
+        team_1_player_bboxes = list(map(lambda t: t[1]["bbox"], filter(lambda t: t[1]["cls_name"] == "player" and t[1]["team"] == 1, player_track.items())))
+        team_2_player_bboxes = list(map(lambda t: t[1]["bbox"], filter(lambda t: t[1]["cls_name"] == "player" and t[1]["team"] == 2, player_track.items())))
+        team_1_centroid = calculate_centroid(team_1_player_bboxes)
+        team_2_centroid = calculate_centroid(team_2_player_bboxes)
+        for player_id, track in player_track.items():
+            if track["cls_name"] == "goalkeeper":
+                goalkeeper_bbox = track["bbox"]
+                goalkeeper_center = get_center_of_bbox(goalkeeper_bbox)
+                dist_1 = measure_distance(goalkeeper_center, team_1_centroid)
+                dist_2 = measure_distance(goalkeeper_center, team_2_centroid)
+                if dist_1 < dist_2:
+                    tracks['players'][frame_num][player_id]['team'] = 1
+                    tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[1]
+                else:
+                    tracks['players'][frame_num][player_id]['team'] = 2
+                    tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[2]
 
     # assign ball to player (if possible)
     player_assigner = PlayerBallAssigner()
