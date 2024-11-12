@@ -1,6 +1,7 @@
 from tracker import Tracker, PlayerBallAssigner
 from utils import read_video, save_video, calculate_centroid, measure_distance, get_center_of_bbox
 from team_assigner import TeamAssigner
+import random
 
 def main():
     
@@ -29,7 +30,27 @@ def main():
     # TEAM ASSIGNMENT
     print("assigning team")
     team_assigner = TeamAssigner()
-    team_assigner.assign_team_color(vod_frames[0], tracks['players'][0])
+
+    # make sure the team color proportions from k mean makes sense
+    for _ in range(10):
+        random_frame_index = random.randrange(len(vod_frames))
+        team_color_counter = [0, 0]
+        team_assigner = TeamAssigner()
+        team_assigner.assign_team_color(vod_frames[random_frame_index], tracks['players'][random_frame_index])
+        for player_id, track in  tracks['players'][random_frame_index].items():
+            if track["cls_name"] == "player":
+                team = team_assigner.get_player_team(vod_frames[random_frame_index],   
+                                                    track,
+                                                    player_id)
+                team_color_counter[team-1] += 1
+
+        total_players = sum(team_color_counter)
+        smaller_team = min(team_color_counter)
+        if smaller_team > total_players * 0.4: # if the smaller team size is at least 40% of the total, the proportions should make sense
+            break
+        else:
+            print("k-mean too biased. re-running")
+
     for frame_num, player_track in enumerate(tracks['players']):
         for player_id, track in player_track.items():
             if track["cls_name"] == "player":
@@ -57,6 +78,8 @@ def main():
                 else:
                     tracks['players'][frame_num][player_id]['team'] = 2
                     tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[2]
+
+    # end of TEAM ASSIGNMENT
 
     # assign ball to player (if possible)
     player_assigner = PlayerBallAssigner()
