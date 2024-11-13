@@ -1,38 +1,62 @@
+import numpy as np
+from pitchlocalization import KeypointDetector, PitchFrame, ViewTransformer
+from team_assigner import TeamAssigner
 from tracker import Tracker, PlayerBallAssigner
 from utils import read_video, save_video, calculate_centroid, measure_distance, get_center_of_bbox
-from team_assigner import TeamAssigner
 import random
 
 def main():
     
-    # read video
+    """
+    INITIALIZATION: load video
+    """
     print('loading video')
     # vod_frames = read_video("sample_vod.mp4")
     vod_frames = read_video("input_videos/121364_0.mp4")
 
 
-    # TRACKING
+    """
+    TRACKING: initial detection and tracking
+    """
     print('adding detections')
+    
+    # init tracker
     tracker = Tracker(
         # model_path= "./best.pt"
-        model_path="./models/best.pt"
+        model_path="./models/detect/best.pt"
     )
 
-    # track detections for each object across frames
+    # track object across frames
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub = True,
         stub_path = "./stubs/track_stubs_121364_0.pkl"
     )
 
-    # interpolate ball positions
+    """
+    TRACKING: BALL INTERPOLATION 
+    """
+    
     tracks['ball'] = tracker.interpolate_ball(tracks['ball'])
 
-    # TEAM ASSIGNMENT
+    # assign ball to player (if possible)
+    player_assigner = PlayerBallAssigner()
+    for frame_num, player_track in enumerate(tracks['players']):
+        ball_bbox = tracks['ball'][frame_num][1]['bbox']
+        assigned_player = player_assigner.assign_ball_to_player(player_track, ball_bbox)
+
+        # add has_ball property to tracking data if assignment is found
+        if assigned_player != -1:
+            tracks['players'][frame_num][assigned_player]['has_ball'] = True
+    
+    """
+    TRACKING: team assignment 
+    """
     print("assigning team")
-    team_assigner = TeamAssigner()
+
 
     # make sure the team color proportions from k mean makes sense
+    team_assigner = TeamAssigner()
     for _ in range(10):
         random_frame_index = random.randrange(len(vod_frames))
         team_color_counter = [0, 0]
@@ -52,6 +76,7 @@ def main():
         else:
             print("k-mean too biased. re-running")
 
+    # team assignment for goalkeeper 
     for frame_num, player_track in enumerate(tracks['players']):
         for player_id, track in player_track.items():
             if track["cls_name"] == "player":
@@ -79,29 +104,82 @@ def main():
                 else:
                     tracks['players'][frame_num][player_id]['team'] = 2
                     tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[2]
-
-    # end of TEAM ASSIGNMENT
-
-    # BALL ASSIGNMENT 
-    player_assigner = PlayerBallAssigner()
-    # assign ball to player (if possible)
-    for frame_num, player_track in enumerate(tracks['players']):
-        ball_bbox = tracks['ball'][frame_num][1]['bbox']
-        assigned_player = player_assigner.assign_ball_to_player(player_track, ball_bbox)
-
-        # add has_ball property to tracking data if assignment is found
-        if assigned_player != -1:
-            tracks['players'][frame_num][assigned_player]['has_ball'] = True
-
+    
+    """
+    TRACKING
+    """
+    # add annotations to match vod 
     print('adding custom annotations')
-    # add custom ellipse annotations using bbox data
     output_frames = tracker.draw_annotations(vod_frames, tracks) 
 
-    # save processed video
+    # save annotated match vod
     print('saving output')
-    # save_video(output_frames, "./outputs/annotated_output.mp4")
-    save_video(output_frames, "./outputs/annotated_output.avi")
+    save_video(output_frames, "./outputs/output_annotated_vod.avi")
 
+    """
+    KEYPOINT DETECTION: initial detection
+    """
+
+    kp = KeypointDetector("./models/pose/best.pt")
+
+    # get keypoints
+    all_keypoints = kp.get_keypoints(
+        vod_frames,
+        read_from_stub=True,
+        stub_path='pitch_keypoints_stub.pkl'
+    )
+
+    """
+    PERSPECTIVE TRANSFORM: transform detections (keypoints, tracks)
+    """
+
+    # get pitch keypoints from mplsoccer pitch layout
+    mpl_keypoints = np.genfromtxt('./assets/pitch_keypoints2.csv', delimiter=',')[:, 1:]
+
+    # init Pitch
+    pitch = PitchFrame()
+
+    for frame_num, frame in enumerate(vod_frames):
+
+        # get pitch keypoint detections for current frame
+        frame_keypoints = all_keypoints[frame_num]
+
+        # get transform
+        vt = ViewTransformer(frame_keypoints, mpl_keypoints)
+
+        # get player and ball tracks for current frame
+        player_tracks = tracks['players'][frame_num]
+        ball_tracks = tracks['ball'][frame_num]
+
+        # get player and ball position coordinates using bounding boxes
+        player_positions = [p['bbox'] for p in player_tracks.values()]
+        ball_positions = [b['bbox'] for b in ball_tracks.values()]
+
+        player_positions = np.array([((x1+x2)/2, y2) for (x1,y1,x2,y2) in player_positions])
+        ball_positions = np.array([((x1+x2)/2, y2) for (x1,y1,x2,y2) in ball_positions])
+
+        # transform object positions to 2D plane
+        transformed_player_positions = vt.transform_points(player_positions)
+        transformed_ball_positions = vt.transform_points(ball_positions)
+
+        # update tracks
+        for idx, p in enumerate(player_tracks):
+            tracks['players'][frame_num][p]['xy_2D'] = transformed_player_positions[idx]
+
+        for idx, b in enumerate(ball_tracks):
+            tracks['ball'][frame_num][b]['xy_2D'] = transformed_ball_positions[idx]
+
+
+    """
+    PERSPECTIVE TRANSFORM: annotate on 2D minimap 
+    """
+    minimap_output_frames = pitch.draw_annotations(vod_frames, tracks)
+
+    """
+    PERSPECTIVE TRANSFORM: output 2D minimap video
+    """
+    # save minimap transformation
+    save_video(minimap_output_frames, "output_minimamp.avi")
 
 if __name__ == '__main__':
 
