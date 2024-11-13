@@ -134,7 +134,7 @@ def main():
     """
 
     # get pitch keypoints from mplsoccer pitch layout
-    mpl_keypoints = np.genfromtxt('./assets/pitch_keypoints2.csv', delimiter=',')[:, 1:]
+    mpl_keypoints = np.genfromtxt('./assets/mplpitch_keypoints.csv', delimiter=',')[:, 1:]
 
     # init Pitch
     pitch = PitchFrame()
