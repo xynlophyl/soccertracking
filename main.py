@@ -10,8 +10,9 @@ def main():
     # vod_frames = read_video("sample_vod.mp4")
     vod_frames = read_video("input_videos/121364_0.mp4")
 
+
+    # TRACKING
     print('adding detections')
-    # init tracker
     tracker = Tracker(
         # model_path= "./best.pt"
         model_path="./models/best.pt"
@@ -81,8 +82,9 @@ def main():
 
     # end of TEAM ASSIGNMENT
 
-    # assign ball to player (if possible)
+    # BALL ASSIGNMENT 
     player_assigner = PlayerBallAssigner()
+    # assign ball to player (if possible)
     for frame_num, player_track in enumerate(tracks['players']):
         ball_bbox = tracks['ball'][frame_num][1]['bbox']
         assigned_player = player_assigner.assign_ball_to_player(player_track, ball_bbox)
@@ -95,8 +97,8 @@ def main():
     # add custom ellipse annotations using bbox data
     output_frames = tracker.draw_annotations(vod_frames, tracks) 
 
-    print('saving output')
     # save processed video
+    print('saving output')
     # save_video(output_frames, "./outputs/annotated_output.mp4")
     save_video(output_frames, "./outputs/annotated_output.avi")
 
