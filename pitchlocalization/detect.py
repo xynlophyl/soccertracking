@@ -21,7 +21,7 @@ class KeypointDetector():
         for i in range(0, len(frames), batch_size):
             batch = frames[i:i+batch_size]
             detections = self.model.predict(batch, conf = 0.3)
-            all_detections.append(detections)
+            all_detections.extend(detections)
         
         return all_detections
     

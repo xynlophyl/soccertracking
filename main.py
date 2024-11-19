@@ -11,8 +11,8 @@ def main():
     INITIALIZATION: load video
     """
     print('loading video')
-    # vod_frames = read_video("sample_vod.mp4")
-    vod_frames = read_video("input_videos/121364_0.mp4")
+    vod_frames = read_video("input_videos/sample_vod.mp4")
+    # vod_frames = read_video("input_videos/121364_0.mp4")
 
 
     """
@@ -29,8 +29,9 @@ def main():
     # track object across frames
     tracks = tracker.get_object_tracks(
         vod_frames,
-        read_from_stub = True,
-        stub_path = "./stubs/track_stubs_121364_0.pkl"
+        read_from_stub=True,
+        # stub_path = "./stubs/track_stubs_121364_0.pkl"
+        stub_path='./stubs/track_stubs.pkl'
     )
 
     """
@@ -108,13 +109,13 @@ def main():
     """
     TRACKING
     """
-    # add annotations to match vod 
-    print('adding custom annotations')
-    output_frames = tracker.draw_annotations(vod_frames, tracks) 
+    # # add annotations to match vod 
+    # print('adding custom annotations')
+    # output_frames = tracker.draw_annotations(vod_frames, tracks) 
 
-    # save annotated match vod
-    print('saving output')
-    save_video(output_frames, "./outputs/output_annotated_vod.avi")
+    # # save annotated match vod
+    # print('saving output')
+    # save_video(output_frames, "./outputs/output_annotated_vod.avi")
 
     """
     KEYPOINT DETECTION: initial detection
@@ -126,7 +127,7 @@ def main():
     all_keypoints = kp.get_keypoints(
         vod_frames,
         read_from_stub=True,
-        stub_path='pitch_keypoints_stub.pkl'
+        stub_path='./stubs/pitch_keypoints_stub.pkl'
     )
 
     """
@@ -142,7 +143,7 @@ def main():
     for frame_num, frame in enumerate(vod_frames):
 
         # get pitch keypoint detections for current frame
-        frame_keypoints = all_keypoints[frame_num]
+        frame_keypoints = all_keypoints[frame_num][0]
 
         # get transform
         vt = ViewTransformer(frame_keypoints, mpl_keypoints)
@@ -179,7 +180,7 @@ def main():
     PERSPECTIVE TRANSFORM: output 2D minimap video
     """
     # save minimap transformation
-    save_video(minimap_output_frames, "output_minimamp.avi")
+    save_video(minimap_output_frames, ".outputs/output_minimap.avi")
 
 if __name__ == '__main__':
 
