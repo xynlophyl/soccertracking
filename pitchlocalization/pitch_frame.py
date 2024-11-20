@@ -33,7 +33,9 @@ class PitchFrame():
 
         # save plot to numpy array using rgba buffer
         pitch_frame = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
-        pitch_frame = pitch_frame.reshape(fig.canvas.get_width_height()[::-1] + (4,))[:,:,:3] # reshape to rgb, remove alpha
+        width, height = fig.canvas.get_width_height()
+        pitch_frame = pitch_frame.reshape((height * 2, width * 2) + (4,))[:,:,:3] # reshape to rgb, remove alpha
+        # pitch_frame = pitch_frame.reshape(fig.canvas.get_width_height()[::-1] + (4,))[:,:,:3] # reshape to rgb, remove alpha
 
         plt.close(fig)
 
@@ -53,11 +55,11 @@ class PitchFrame():
         """
 
         # draw circle to represent player
-        frame = cv2.circle(frame, xy, radius=5, color=(255, 255, 255), thickness=-1)
+        frame = cv2.circle(frame, xy, radius=5, color=color, thickness=-1)
 
         return frame
 
-    def add_circle_text(self, frame, xy, text):
+    def add_circle_text(self, frame, xy, text, color):
 
         """
         add text inside circle annotation
@@ -77,7 +79,7 @@ class PitchFrame():
             (text_x, text_y),
             cv2.FONT_HERSHEY_SIMPLEX,
             fontScale = 0.6,
-            color = (0,0,0), # TODO: make color always visible depending on team assignment (if team color is black, then text won't show up)
+            color = color, # TODO: make color always visible depending on team assignment (if team color is black, then text won't show up)
             thickness = 2
         )
 
@@ -116,11 +118,11 @@ class PitchFrame():
             for i, (track_id, player) in enumerate(player_dict.items()):
             # for track_id, player in player_dict.items():
                 # print(f"{i+1}/{len(player_dict)}", player)
-                player_color = player.get("team_color2", (0,0,255))
+                player_color = player.get("team_color", (0,0,255))
                 x, y = player['xy_2D']
                 xy = (int(x), int(y)) # TODO: scale coordinates to fit frame dimensions (from plot coordinates)
                 pitch_frame = self.draw_circle(pitch_frame, xy, player_color)
-                pitch_frame = self.add_circle_text(pitch_frame, xy, str(track_id)) # TODO: if player identification works out, use that instead of track_id
+                pitch_frame = self.add_circle_text(pitch_frame, xy, str(track_id), player_color) # TODO: if player identification works out, use that instead of track_id
                 pitch_frame = self.add_circle_highlight(pitch_frame, xy) # TODO: add highlight around player if in possession of ball (maybe? if it doesn't clutter visualization too much)
 
             ball_color = (0,0,0) # TODO: change ball color or design?

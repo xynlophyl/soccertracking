@@ -11,8 +11,8 @@ def main():
     INITIALIZATION: load video
     """
     print('loading video')
-    vod_frames = read_video("input_videos/sample_vod.mp4")
-    # vod_frames = read_video("input_videos/121364_0.mp4")
+    # vod_frames = read_video("input_videos/sample_vod.mp4")
+    vod_frames = read_video("input_videos/121364_0_resize.mp4")
 
 
     """
@@ -30,8 +30,8 @@ def main():
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub=True,
-        # stub_path = "./stubs/track_stubs_121364_0.pkl"
-        stub_path='./stubs/track_stubs.pkl'
+        stub_path = "./stubs/track_stubs_121364_0_resize.pkl"
+        # stub_path='./stubs/track_stubs.pkl'
     )
 
     """
@@ -121,6 +121,7 @@ def main():
     KEYPOINT DETECTION: initial detection
     """
 
+    print("key point")
     kp = KeypointDetector("./models/pose/best.pt")
 
     # get keypoints
@@ -138,6 +139,7 @@ def main():
     mpl_keypoints = np.genfromtxt('./assets/mplpitch_keypoints.csv', delimiter=',')[:, 1:]
 
     # init Pitch
+    print("pitch")
     pitch = PitchFrame()
 
     for frame_num, frame in enumerate(vod_frames):
@@ -174,13 +176,15 @@ def main():
     """
     PERSPECTIVE TRANSFORM: annotate on 2D minimap 
     """
+    print("draw minimap")
     minimap_output_frames = pitch.draw_annotations(vod_frames, tracks)
 
     """
     PERSPECTIVE TRANSFORM: output 2D minimap video
     """
     # save minimap transformation
-    save_video(minimap_output_frames, ".outputs/output_minimap.avi")
+    print("saving minimap")
+    save_video(minimap_output_frames, "./outputs/output_minimap.avi")
 
 if __name__ == '__main__':
 
