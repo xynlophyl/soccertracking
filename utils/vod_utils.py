@@ -42,16 +42,12 @@ def save_video(frames: list, outpath: str):
 
 def generate_uuid() -> str:
 
-    """
-    generate uuid for each shard
-    """
-
     return uuid.uuid4().hex
 
 def create_manifest(metadata: dict, outpath: str) -> None:
     
     """
-    create manifest file to store chunk metadata for reconstruction
+    create manifest file to store chunk metadata for future reconstruction
     """
 
     with open(outpath, 'w') as f:
