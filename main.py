@@ -11,8 +11,13 @@ def main():
     INITIALIZATION: load video
     """
     print('loading video')
+<<<<<<< HEAD
     # vod_frames = read_video("input_videos/sample_vod.mp4")
     vod_frames = read_video("input_videos/121364_0.mp4")
+=======
+    vod_frames = read_video("input_videos/sample_vod.mp4")
+    # vod_frames = read_video("input_videos/121364_0_resize.mp4")
+>>>>>>> 4ce5443459e3b279bbd190652d7a223dca1ab13b
 
 
     """
@@ -22,7 +27,6 @@ def main():
     
     # init tracker
     tracker = Tracker(
-        # model_path= "./best.pt"
         model_path="./models/detect/best.pt"
     )
 
@@ -30,8 +34,13 @@ def main():
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub=True,
+<<<<<<< HEAD
         stub_path = "./stubs/track_stubs_121364_0.pkl"
         # stub_path='./stubs/track_stubs.pkl'
+=======
+        # stub_path = "./stubs/track_stubs_121364_0_resize.pkl"
+        stub_path='./stubs/track_stubs.pkl'
+>>>>>>> 4ce5443459e3b279bbd190652d7a223dca1ab13b
     )
 
     """
@@ -107,15 +116,20 @@ def main():
                     tracks['players'][frame_num][player_id]['team_color'] = team_assigner.team_colors[2]
     
     """
-    TRACKING
+    TRACKING: annotations
     """
     # # add annotations to match vod 
     print('adding custom annotations')
     output_frames = tracker.draw_annotations(vod_frames, tracks) 
 
     # # save annotated match vod
+<<<<<<< HEAD
     print('saving output')
     save_video(output_frames, "./outputs/output_annotated_vod_121364_0.avi")
+=======
+    # print('saving annotations on vod')
+    # save_video(output_frames, "./outputs/output_annotated_vod.avi")
+>>>>>>> 4ce5443459e3b279bbd190652d7a223dca1ab13b
 
     """
     KEYPOINT DETECTION: initial detection

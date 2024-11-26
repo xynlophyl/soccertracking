@@ -4,7 +4,6 @@ import os
 import pandas as pd
 import pickle
 import supervision as sv
-from typing import Optional
 from ultralytics import YOLO
 import sys
 sys.path.append("../")
@@ -24,6 +23,7 @@ class Tracker():
         self.tracker = sv.ByteTrack()
 
     def detect_frames(self, frames: list, batch_size: int = 32) -> list:
+        
         """
         get detection bboxes using trained YOLO model 
         """
@@ -47,7 +47,7 @@ class Tracker():
             frames: list,
             remap_gk: bool = True,
             read_from_stub: bool = False,
-            stub_path: str = None
+            stub_path: str | None = None
         ):
 
         """
@@ -183,7 +183,7 @@ class Tracker():
             frame: list,
             bbox: list,
             color: list,
-            track_id: Optional[int] = None
+            track_id: int | None = None
     ):
         
         """
