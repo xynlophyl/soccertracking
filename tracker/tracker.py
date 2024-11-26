@@ -4,6 +4,7 @@ import os
 import pandas as pd
 import pickle
 import supervision as sv
+from typing import Optional
 from ultralytics import YOLO
 import sys
 sys.path.append("../")
@@ -23,7 +24,6 @@ class Tracker():
         self.tracker = sv.ByteTrack()
 
     def detect_frames(self, frames: list, batch_size: int = 32) -> list:
-        
         """
         get detection bboxes using trained YOLO model 
         """
@@ -47,7 +47,7 @@ class Tracker():
             frames: list,
             remap_gk: bool = True,
             read_from_stub: bool = False,
-            stub_path: str | None = None
+            stub_path: str = None
         ):
 
         """
@@ -183,7 +183,7 @@ class Tracker():
             frame: list,
             bbox: list,
             color: list,
-            track_id: int | None = None
+            track_id: Optional[int] = None
     ):
         
         """
@@ -293,7 +293,7 @@ class Tracker():
                 if player.get("has_ball", False):
                     player_color = (255,0,0) # if player has ball, blue highlight
                 else:
-                    player_color = player.get("team_color",(0,0,255)) # other players, team color
+                    player_color = player.get("team_color",(255,255,255)) # other players, team color
 
                 frame = self.draw_ellipse(frame, player['bbox'], player_color)
                 frame = self.draw_rectangle(frame, player['bbox'], player_color, track_id)

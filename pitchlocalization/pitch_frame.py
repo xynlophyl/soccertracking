@@ -47,7 +47,7 @@ class PitchFrame():
         returns np representation of mplsoccer pitch plot
         """
 
-        pitch_frame = cv2.imread('assets/mplpitch.png')
+        pitch_frame = cv2.imread('./assets/mplpitch.png')
 
         return pitch_frame
 
@@ -74,8 +74,8 @@ class PitchFrame():
         (text_width, text_height), baseline = cv2.getTextSize(text, cv2.FONT_HERSHEY_SIMPLEX, fontScale = 2, thickness = 2)
 
         # calculate center position of circle
-        text_x = xy[0] - text_width // 2
-        text_y = xy[1] + text_height // 2
+        text_x = xy[0] - text_height // 4
+        text_y = xy[1] - text_height // 4
 
         # put text inside the circle
         cv2.putText(

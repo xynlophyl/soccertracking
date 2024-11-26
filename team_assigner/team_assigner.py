@@ -52,8 +52,10 @@ class TeamAssigner:
 
         self.kmeans = kmeans
 
-        self.team_colors[1] = kmeans.cluster_centers_[0]
-        self.team_colors[2] = kmeans.cluster_centers_[1]
+        # self.team_colors[1] = kmeans.cluster_centers_[0]
+        # self.team_colors[2] = kmeans.cluster_centers_[1]
+        self.team_colors[1] = [189, 0, 255] # hard coded team 1 color, in BGR
+        self.team_colors[2] = [240, 255, 160] # hard coded team 2 color, in BGR
 
 
     def get_player_team(self,frame, player_track, player_id):

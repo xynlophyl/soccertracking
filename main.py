@@ -11,8 +11,8 @@ def main():
     INITIALIZATION: load video
     """
     print('loading video')
-    vod_frames = read_video("input_videos/sample_vod.mp4")
-    # vod_frames = read_video("input_videos/121364_0_resize.mp4")
+    # vod_frames = read_video("input_videos/sample_vod.mp4")
+    vod_frames = read_video("input_videos/121364_0.mp4")
 
 
     """
@@ -29,8 +29,8 @@ def main():
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub=True,
-        # stub_path = "./stubs/track_stubs_121364_0_resize.pkl"
-        stub_path='./stubs/track_stubs.pkl'
+        stub_path = "./stubs/track_stubs_121364_0.pkl"
+        # stub_path='./stubs/track_stubs.pkl'
     )
 
     """
@@ -109,12 +109,12 @@ def main():
     TRACKING: annotations
     """
     # # add annotations to match vod 
-    # print('adding custom annotations')
-    # output_frames = tracker.draw_annotations(vod_frames, tracks) 
+    print('adding custom annotations')
+    output_frames = tracker.draw_annotations(vod_frames, tracks) 
 
     # # save annotated match vod
-    # print('saving annotations on vod')
-    # save_video(output_frames, "./outputs/output_annotated_vod.avi")
+    print('saving annotations on vod')
+    save_video(output_frames, "./outputs/output_annotated_vod.avi")
 
     """
     KEYPOINT DETECTION: initial detection
@@ -183,7 +183,7 @@ def main():
     """
     # save minimap transformation
     print("saving minimap")
-    save_video(minimap_output_frames, "./outputs/output_minimap.avi")
+    save_video(minimap_output_frames, "./outputs/output_minimap_121364_0.avi")
 
 if __name__ == '__main__':
 
