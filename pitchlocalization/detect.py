@@ -1,6 +1,7 @@
 import cv2
 import os
 import pickle
+from typing import Optional
 from ultralytics import YOLO
 
 class KeypointDetector():
@@ -27,8 +28,8 @@ class KeypointDetector():
     def get_keypoints(
             self,
             frames: list,
-            read_from_stub: bool | None = None,
-            stub_path: bool | None = None
+            read_from_stub: Optional[bool] = None,
+            stub_path: Optional[str] = None
     ):
         
         # check for existing keypoint stub
@@ -53,7 +54,7 @@ class KeypointDetector():
     def draw_video_annotations(self, frames: list, all_pitch_keypoint_detections: list):
 
         """
-        draw annotations onto vod frames to visualize pitch keypoints
+        draw keypoint annotations onto vod frames to visualize
         """
         assert len(frames) == len(all_pitch_keypoint_detections)
 

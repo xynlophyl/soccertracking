@@ -63,8 +63,8 @@ def combine_videos(clip_video_path, minimap_video_path, output_path, minimap_siz
 
 # Main function
 if __name__ == "__main__":
-    clip_video_path = "./outputs/output_annotated_vod_121364_0.mp4"  # Path to the first video
-    minimap_video_path = "./outputs/output_minimap_121364_0.mp4"  # Path to the second video
+    clip_video_path = "./outputs/output_annotated_vod.avi"  # Path to the first video
+    minimap_video_path = "./outputs/output_minimap_121364_0.avi"  # Path to the second video
     output_path = "./outputs/combined_video.mp4"  # Path to save the combined video
 
     # Define the size and position for minimap video
