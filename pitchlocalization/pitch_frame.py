@@ -19,27 +19,34 @@ class PitchFrame():
         returns np representation of mplsoccer pitch plot
         """
 
-        pitch = Pitch(
-            pitch_type='custom',
-            pitch_length=105, pitch_width=68,
-            pitch_color='#aabb97',
-            line_color='#c7d5cc',
-        )
+        # pitch = Pitch(
+        #     pitch_type='custom',
+        #     pitch_length=105, pitch_width=68,
+        #     pitch_color='#aabb97',
+        #     line_color='#c7d5cc',
+        # )
 
-        fig, ax = pitch.draw()
+        # fig, ax = pitch.draw()
 
-        # update plot
-        fig.canvas.draw()
+        # # update plot
+        # fig.canvas.draw()
 
-        # save plot to numpy array using rgba buffer
-        pitch_frame = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
-        width, height = fig.canvas.get_width_height()
-        pitch_frame = pitch_frame.reshape((height * 2, width * 2) + (4,))[:,:,:3] # reshape to rgb, remove alpha
-        # pitch_frame = pitch_frame.reshape(fig.canvas.get_width_height()[::-1] + (4,))[:,:,:3] # reshape to rgb, remove alpha
+        # # save plot to numpy array using rgba buffer
+        # pitch_frame = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
+        # width, height = fig.canvas.get_width_height()
+        # pitch_frame = pitch_frame.reshape((height * 2, width * 2) + (4,))[:,:,:3] # reshape to rgb, remove alpha
+        # # pitch_frame = pitch_frame.reshape(fig.canvas.get_width_height()[::-1] + (4,))[:,:,:3] # reshape to rgb, remove alpha
+        # pitch_frame = cv2.resize(pitch_frame, (640, 480))
+        # plt.close(fig)
 
-        plt.close(fig)
+        # return np.ascontiguousarray(pitch_frame, dtype=np.uint8)
+        image = cv2.imread("./assets/mplpitch.png", cv2.IMREAD_COLOR)
 
-        return np.ascontiguousarray(pitch_frame, dtype=np.uint8)
+        # Resize the image to 640x480 resolution
+        resized_image = cv2.resize(image, (640, 480))
+
+        # Ensure the array is contiguous and has dtype uint8
+        return np.ascontiguousarray(resized_image, dtype=np.uint8)
 
     def get_pitch_frame(self):
 
