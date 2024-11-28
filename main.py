@@ -82,48 +82,18 @@ def main():
     PERSPECTIVE TRANSFORM: transform detections (keypoints, tracks)
     """
 
+    print('perspective transform')
     # get pitch keypoints from mplsoccer pitch layout
     mpl_keypoints = np.genfromtxt('./assets/mplpitch_keypoints.csv', delimiter=',')[:, 1:]
 
-    # init Pitch
-    print("pitch")
-    pitch = PitchFrame()
-
-    for frame_num, frame in enumerate(vod_frames):
-
-        # get pitch keypoint detections for current frame
-        frame_keypoints = all_keypoints[frame_num][0]
-
-        # get transform
-        vt = ViewTransformer(frame_keypoints, mpl_keypoints)
-
-        # get player and ball tracks for current frame
-        player_tracks = tracks['players'][frame_num]
-        ball_tracks = tracks['ball'][frame_num]
-
-        # get player and ball position coordinates using bounding boxes
-        player_positions = [p['bbox'] for p in player_tracks.values()]
-        ball_positions = [b['bbox'] for b in ball_tracks.values()]
-
-        player_positions = np.array([((x1+x2)/2, y2) for (x1,y1,x2,y2) in player_positions])
-        ball_positions = np.array([((x1+x2)/2, y2) for (x1,y1,x2,y2) in ball_positions])
-
-        # transform object positions to 2D plane
-        transformed_player_positions = vt.transform_points(player_positions)
-        transformed_ball_positions = vt.transform_points(ball_positions)
-
-        # update tracks
-        for idx, p in enumerate(player_tracks):
-            tracks['players'][frame_num][p]['xy_2D'] = transformed_player_positions[idx]
-
-        for idx, b in enumerate(ball_tracks):
-            tracks['ball'][frame_num][b]['xy_2D'] = transformed_ball_positions[idx]
-
+    vt = ViewTransformer(mpl_keypoints, conf = 0.5)
+    vt.transform_all_points(vod_frames, tracks, all_keypoints)
 
     """
     PERSPECTIVE TRANSFORM: annotate on 2D minimap 
     """
     print("draw minimap")
+    pitch = PitchFrame()
     minimap_output_frames = pitch.draw_annotations(vod_frames, tracks)
 
     """
@@ -132,6 +102,7 @@ def main():
     # save minimap transformation
     print("saving minimap")
     save_video(minimap_output_frames, "./outputs/output_minimap_121364_0.avi")
+    save_video(minimap_output_frames, "./outputs/output_minimap.avi")
 
 if __name__ == '__main__':
 
