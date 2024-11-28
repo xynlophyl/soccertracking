@@ -1,7 +1,13 @@
 def get_center_of_bbox(bbox):
+    """TODO refactor to return floats and convert to ints after"""
 
     x1, y1, x2, y2 = bbox
     return int((x1+x2)/2), int((y1+y2)/2)
+
+def get_bottom_center_of_bbox(bbox):
+    x1, y1, x2, y2 = bbox
+
+    return (x1+x2)/2, y2
 
 def get_bbox_width(bbox):
 
@@ -15,7 +21,7 @@ def measure_distance(p1, p2):
     calculate euclidean distance between two points
     """
 
-    return ((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)**0.5
+    return ((p1[0]-p2[0])**2 + (p1[1]-p2[1])**2)**0.5    
 
 def calculate_centroid(bboxes):
     sum_x, sum_y = 0, 0
