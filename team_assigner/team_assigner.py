@@ -1,4 +1,6 @@
 from sklearn.cluster import KMeans
+import random
+from utils import calculate_centroid, measure_distance, get_center_of_bbox
 
 class TeamAssigner:
     def __init__(self):
@@ -71,3 +73,61 @@ class TeamAssigner:
         self.player_team_dict[player_id] = team_id
 
         return team_id
+
+    def get_goalkeeper_team(self, frames, tracks):
+        """TODO goalkeeper assignment isn't always correct
+                consider using left/right heuristic for team assignment instead (goalkeeper assignment can be easy), and see how to map 0/1 values to l/r for players """
+
+        for frame_num, player_track in enumerate(tracks['players']):
+            for player_id, track in player_track.items():
+                if track["cls_name"] == "player":
+                    team = self.get_player_team(frames[frame_num],   
+                                                        track,
+                                                        player_id)
+                    tracks['players'][frame_num][player_id]['team'] = team
+                    tracks['players'][frame_num][player_id]['team_color'] = self.team_colors[team]
+
+            # estimated the goalkeeper's team based on the teams' centroids
+            team_1_player_bboxes = list(map(lambda t: t[1]["bbox"], filter(lambda t: t[1]["cls_name"] == "player" and t[1]["team"] == 1, player_track.items())))
+            team_2_player_bboxes = list(map(lambda t: t[1]["bbox"], filter(lambda t: t[1]["cls_name"] == "player" and t[1]["team"] == 2, player_track.items())))
+
+            team_1_centroid = calculate_centroid(team_1_player_bboxes)
+            team_2_centroid = calculate_centroid(team_2_player_bboxes)
+            for player_id, track in player_track.items():
+                if track["cls_name"] == "goalkeeper":
+                    goalkeeper_bbox = track["bbox"]
+                    goalkeeper_center = get_center_of_bbox(goalkeeper_bbox)
+                    dist_1 = measure_distance(goalkeeper_center, team_1_centroid)
+                    dist_2 = measure_distance(goalkeeper_center, team_2_centroid)
+                    if dist_1 < dist_2:
+                        tracks['players'][frame_num][player_id]['team'] = 1
+                        tracks['players'][frame_num][player_id]['team_color'] = self.team_colors[1]
+                    else:
+                        tracks['players'][frame_num][player_id]['team'] = 2
+                        tracks['players'][frame_num][player_id]['team_color'] = self.team_colors[2]
+
+        return tracks
+
+    def assign_team_by_sampling(self, frames, tracks):
+        for _ in range(100):
+            random_frame_index = random.randrange(len(frames))
+            team_color_counter = [0, 0]
+            self.player_team_dict = {}
+            self.assign_team_color(frames[random_frame_index], tracks['players'][random_frame_index])
+            for player_id, track in  tracks['players'][random_frame_index].items():
+                if track["cls_name"] == "player":
+                    team = self.get_player_team(
+                        frames[random_frame_index],   
+                        track,
+                        player_id
+                    )
+                    team_color_counter[team-1] += 1
+
+            total_players = sum(team_color_counter)
+            smaller_team = min(team_color_counter)
+            if smaller_team > total_players * 0.4: # if the smaller team size is at least 40% of the total, the proportions should make sense
+                break
+            else:
+                print("k-mean too biased. re-running")
+
+        return tracks
