@@ -8,13 +8,10 @@ class PlayerBallAssigner():
     def __init__(self):
         self.max_player_ball_distance = 70 # max pixels away from ball a player can be to get assigned  
 
-    def assign_ball_to_player(self, players: list, ball: list):
+    def _assign_ball_to_player(self, players: list, ball: list):
 
         # use center of ball
         ball_position = get_center_of_bbox(ball)
-
-        # assign team TODO: implement team identification 
-        pass
 
         # assign player with ball possession (if exists)
         min_distance = float('inf')
@@ -34,3 +31,14 @@ class PlayerBallAssigner():
 
         return assigned_player
 
+    def assign_ball_to_player(self, tracks):
+
+        for frame_num, player_track in enumerate(tracks['players']):
+            ball_bbox = tracks['ball'][frame_num][1]['bbox']
+            assigned_player = self._assign_ball_to_player(player_track, ball_bbox)
+
+            # add has_ball property to tracking data if assignment is found
+            if assigned_player != -1:
+                tracks['players'][frame_num][assigned_player]['has_ball'] = True
+
+        return tracks
