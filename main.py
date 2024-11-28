@@ -2,17 +2,21 @@ import numpy as np
 from pitchlocalization import KeypointDetector, PitchFrame, ViewTransformer
 from team_assigner import TeamAssigner
 from tracker import Tracker, PlayerBallAssigner
-from utils import read_video, save_video
+from utils import read_video, save_video, get_filename
 
-def main():
-    
+def main(
+    input_video = "input_videos/08fd33_4.mp4",
+    detect_model = "models/detect/best.pt",
+    pose_model = "models/pose/best.pt",
+):
+
     """
     INITIALIZATION: load video
     """
     print('loading video')
-    vod_frames = read_video("input_videos/sample_vod.mp4")
-    # vod_frames = read_video("input_videos/121364_0.mp4")
+    vod_frames = read_video(input_video)
 
+    filename = get_filename(input_video)
 
     """
     TRACKING: initial detection and tracking
@@ -21,15 +25,15 @@ def main():
     
     # init tracker
     tracker = Tracker(
-        model_path="./models/detect/best.pt"
+        model_path=detect_model
     )
 
     # track object across frames
+    track_stubs = f"stubs/track_stubs_{filename}.pkl"
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub=True,
-        # stub_path = "./stubs/track_stubs_121364_0.pkl"
-        stub_path='./stubs/track_stubs.pkl'
+        stub_path=track_stubs
     )
 
     """
@@ -62,20 +66,23 @@ def main():
 
     # # save annotated match vod
     print('saving annotations on vod')
-    save_video(output_frames, "./outputs/output_annotated_vod.avi")
+    
+    output_video = f"outputs/output_annotated_{filename}.avi"
+    save_video(output_frames, output_video)
 
     """
     KEYPOINT DETECTION: initial detection
     """
 
     print("key point")
-    kp = KeypointDetector("./models/pose/best.pt")
+    kp = KeypointDetector(pose_model)
 
     # get keypoints
+    keypoint_stubs = f"stubs/keypoint_stubs_{filename}.pkl"
     all_keypoints = kp.get_keypoints(
         vod_frames,
         read_from_stub=True,
-        stub_path='./stubs/pitch_keypoints_stub.pkl'
+        stub_path=keypoint_stubs
     )
 
     """
@@ -104,8 +111,8 @@ def main():
     """
     # save minimap transformation
     print("saving minimap")
-    save_video(minimap_output_frames, "./outputs/output_minimap_121364_0.avi")
-    save_video(minimap_output_frames, "./outputs/output_minimap.avi")
+    output_minimap = f"outputs/output_minimap_{filename}.avi"
+    save_video(minimap_output_frames, output_minimap)
 
 if __name__ == '__main__':
 
