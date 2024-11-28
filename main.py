@@ -86,8 +86,11 @@ def main():
     # get pitch keypoints from mplsoccer pitch layout
     mpl_keypoints = np.genfromtxt('./assets/mplpitch_keypoints.csv', delimiter=',')[:, 1:]
 
+    # init view transformer
     vt = ViewTransformer(mpl_keypoints, conf = 0.5)
-    vt.transform_all_points(vod_frames, tracks, all_keypoints)
+    
+    # transform tracking coordinates to 2D plane
+    tracks = vt.transform_all_points(vod_frames, tracks, all_keypoints)
 
     """
     PERSPECTIVE TRANSFORM: annotate on 2D minimap 
