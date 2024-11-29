@@ -1,0 +1,58 @@
+{
+    "player": {
+        "supercategory": "object",
+        "id": 1
+    },
+    "goalkeeper": {
+        "supercategory": "object",
+        "id": 2
+    },
+    "referee": {
+        "supercategory": "object",
+        "id": 3
+    },
+    "ball": {
+        "supercategory": "object",
+        "id": 4
+    },
+    "pitch": {
+        "supercategory": "pitch",
+        "id": 5,
+        "lines": [
+            "Big rect. left bottom",
+            "Big rect. left main",
+            "Big rect. left top",
+            "Big rect. right bottom",
+            "Big rect. right main",
+            "Big rect. right top",
+            "Circle central",
+            "Circle left",
+            "Circle right",
+            "Goal left crossbar",
+            "Goal left post left",
+            "Goal left post right",
+            "Goal right crossbar",
+            "Goal right post left",
+            "Goal right post right",
+            "Middle line",
+            "Side line bottom",
+            "Side line left",
+            "Side line right",
+            "Side line top",
+            "Small rect. left bottom",
+            "Small rect. left main",
+            "Small rect. left top",
+            "Small rect. right bottom",
+            "Small rect. right main",
+            "Small rect. right top"
+        ]
+    },
+    "camera": {
+        "supercategory": "camera",
+        "id": 6
+    },
+    "other": {
+        "supercategory": "object",
+        "id": 7
+    }
+}
