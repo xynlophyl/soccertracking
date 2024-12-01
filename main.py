@@ -2,7 +2,7 @@ import numpy as np
 from pitchlocalization import KeypointDetector, PitchFrame, ViewTransformer
 from team_assigner import TeamAssigner
 from tracker import Tracker, PlayerBallAssigner
-from utils import read_video, save_video, get_filename
+from utils import read_video, save_video, get_video_filename
 
 def main(
     input_video = "input_videos/08fd33_4.mp4",
@@ -16,7 +16,7 @@ def main(
     print('loading video')
     vod_frames = read_video(input_video)
 
-    filename = get_filename(input_video)
+    filename = get_video_filename(input_video)
 
     """
     TRACKING: initial detection and tracking
