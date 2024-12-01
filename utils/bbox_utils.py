@@ -15,6 +15,12 @@ def get_bbox_width(bbox):
 
     return x2 - x1
 
+def get_bbox_height(bbox):
+    
+    _, y1, _, y2 = bbox
+    
+    return y2 - y1
+
 def measure_distance(p1, p2):
 
     """

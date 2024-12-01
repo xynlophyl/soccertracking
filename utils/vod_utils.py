@@ -40,6 +40,14 @@ def save_video(frames: list, outpath: str):
     
     out.release()
 
+def get_video_filename(filepath):
+
+    _, filename = os.path.split(filepath)
+    filename, ext = os.path.splitext(filename)
+
+    return filename
+
+
 def generate_uuid() -> str:
 
     return uuid.uuid4().hex
