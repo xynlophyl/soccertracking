@@ -5,6 +5,10 @@ stubs
 outputs
 input_videos
 
+# soccernet
+sn-gamestate
+tracklab
+
 # cache
 **pycache**
 **cache**
