@@ -213,7 +213,7 @@ class Tracker():
             )
 
             x1_text = x1_rect + 12
-            if track_id > 99:
+            if type(track_id) is int and track_id > 99:
                 x1_text -= 10
 
             # add tracked object's id as text
@@ -271,7 +271,7 @@ class Tracker():
         
         return frame
         
-    def draw_annotations(self, frames: list, tracks: list):
+    def draw_annotations(self, frames: list, tracks: list, use_jersey_numbers: bool = False):
 
         """
         draw custom annotations using bbox detections
@@ -294,6 +294,9 @@ class Tracker():
                     player_color = (255,0,0) # if player has ball, blue highlight
                 else:
                     player_color = player.get("team_color",(255,255,255)) # other players, team color
+
+                if use_jersey_numbers:
+                    track_id = player.get('jn', 'x')
 
                 frame = self.draw_ellipse(frame, player['bbox'], player_color)
                 frame = self.draw_rectangle(frame, player['bbox'], player_color, track_id)

@@ -1,7 +1,10 @@
 import numpy as np
+import torch
+
 from pitchlocalization import KeypointDetector, PitchFrame, ViewTransformer
 from team_assigner import TeamAssigner
 from tracker import Tracker, PlayerBallAssigner
+from jersey_recognition import JerseyOCR
 from utils import read_video, save_video, get_video_filename
 
 def main(
@@ -39,7 +42,6 @@ def main(
     """
     TRACKING: BALL INTERPOLATION 
     """
-    
     tracks['ball'] = tracker.interpolate_ball(tracks['ball'])
 
     # assign ball to player (if possible)
@@ -57,12 +59,31 @@ def main(
 
     # team assignment for goalkeeper 
     tracks = team_assigner.get_goalkeeper_team(vod_frames, tracks)
+
+    """
+    TRACKING: jersey number recognition
+    """
+    ocr = JerseyOCR(batch_size = 8, device = 'cuda' if torch.cuda.is_available() else 'cpu')
+    jersey_stubs = f"stubs/jersey_stubs_{filename}.pkl"
+    if False:
+        tracks = ocr.get_jersey_tracks(
+            vod_frames, 
+            tracks, 
+            stub_path= jersey_stubs
+        )
+    else:
+        tracks = tracker.get_object_tracks(
+            vod_frames,
+            read_from_stub=True,
+            stub_path=jersey_stubs
+        )
+    
     """
     TRACKING: annotations
     """
     # add annotations to match vod 
     print('adding custom annotations')
-    output_frames = tracker.draw_annotations(vod_frames, tracks) 
+    output_frames = tracker.draw_annotations(vod_frames, tracks, use_jersey_numbers = True) 
 
     # # save annotated match vod
     print('saving annotations on vod')
@@ -104,7 +125,7 @@ def main(
     """
     print("draw minimap")
     pitch = PitchFrame()
-    minimap_output_frames = pitch.draw_annotations(vod_frames, tracks)
+    minimap_output_frames = pitch.draw_annotations(vod_frames, tracks, use_jersey_numbers = True)
 
     """
     PERSPECTIVE TRANSFORM: output 2D minimap video
