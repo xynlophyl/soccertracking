@@ -16,6 +16,6 @@ This project utilizes a multimodal architecture to track key objects (players, r
 
 
 TODO
-    - object detection: tracking, color/team assignments, ball position interpolation
-    - pitch localization: camera movement estimators, perspective transformations, position smoothing
-    - visualizations: raw annotations, 2D minimap view, player heatmaps, speed estimators 
+- object detection: tracking, color/team assignments, ball position interpolation
+- pitch localization: camera movement estimators, perspective transformations, position smoothing
+- visualizations: raw annotations, 2D minimap view, player heatmaps, speed estimators 
