@@ -101,7 +101,7 @@ class PitchFrame():
         return frame
 
 
-    def draw_annotations(self, frames, tracks):
+    def draw_annotations(self, frames, tracks, use_jersey_numbers = False):
 
         """
         create 2D pitch visualization for each frame in original VOD
@@ -120,10 +120,10 @@ class PitchFrame():
             ball_dict = tracks["ball"][frame_num]
 
             # draw players on pitch
-            for i, (track_id, player) in enumerate(player_dict.items()):
-            # for track_id, player in player_dict.items():
-                # print(f"{i+1}/{len(player_dict)}", player)
+            for track_id, player in player_dict.items():
                 player_color = player.get("team_color", (0,0,255))
+                if use_jersey_numbers:
+                    track_id = player.get("jn", "x")
                 x, y = player['xy_2D']
                 xy = (int(x), int(y)) # TODO: scale coordinates to fit frame dimensions (from plot coordinates)
                 pitch_frame = self.draw_circle(pitch_frame, xy, player_color)
