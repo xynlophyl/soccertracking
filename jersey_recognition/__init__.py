@@ -1,1 +1,1 @@
-from jersey_ocr import JerseyOCR
+from .jersey_ocr import JerseyOCR

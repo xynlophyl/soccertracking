@@ -1,6 +1,6 @@
 import copy
 import cv2
-from mplsoccer.pitch import Pitch
+# from mplsoccer.pitch import Pitch
 import matplotlib.pyplot as plt
 import numpy as np
 
