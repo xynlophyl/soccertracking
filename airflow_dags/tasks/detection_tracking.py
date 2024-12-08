@@ -5,7 +5,8 @@ def detection_tracking():
     detect_model = "models/detect/best.pt"
     pose_model = "models/pose/best.pt"
     vod_frames = read_video(input_video)
-    print("video frames:", len(vod_frames))
+    filename = get_video_filename(input_video)
+    print("video info:", len(vod_frames), filename)
 
 if __name__ == '__main__':
     detection_tracking()
