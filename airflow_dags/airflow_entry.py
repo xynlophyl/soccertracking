@@ -25,7 +25,7 @@ default_args = {
 }
 
 with DAG(
-    "eecs6893-soccer-project",
+    "eecs6893-soccer-project-gcp",
     default_args=default_args,
     description="eecs6893 soccer project",
     start_date=datetime(2021, 1, 1),
