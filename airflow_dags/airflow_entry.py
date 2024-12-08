@@ -54,14 +54,14 @@ with DAG(
         retries=0,
     )
     
-    # output_annotated_video = BashOperator(
-    #     task_id="output_annotated_video",
-    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
-    #     retries=0,
-    # )
+    output_annotated_video = BashOperator(
+        task_id="output_annotated_video",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
+        retries=0,
+    )
 
     detection_tracking >> ball_interpolation
-    # ball_interpolation >> output_annotated_video
+    ball_interpolation >> output_annotated_video
 
     # t1 >> [t2, t3, t4, t5]
     # t2 >> t6
