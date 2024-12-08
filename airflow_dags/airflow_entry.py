@@ -5,7 +5,8 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-# pip install matplotlib mplsoccer numpy opencv-python-headless pandas pillow python-dotenv requests roboflow scikit-learn scipy torch torchvision tqdm ultralytics
+# pip install matplotlib mplsoccer numpy opencv-python-headless pandas pillow python-dotenv requests roboflow scikit-learn scipy torch torchvision tqdm ultralytics supervision
+# pip uninstall opencv-python
 
 count = 0
 
