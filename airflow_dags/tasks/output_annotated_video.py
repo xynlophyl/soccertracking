@@ -6,7 +6,7 @@ from tracker.tracker import Tracker
 def output_annotated_video():
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-        PREV_TASK = "ball_interpolation"
+        PREV_TASK = "team_assignment"
         
         input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
         detect_model = f"{GCP_PROJECT_PATH}/models/detect/best.pt"
