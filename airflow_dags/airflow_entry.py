@@ -37,6 +37,8 @@ with DAG(
     #     task_id='t4',
     #     python_callable=correct_sleeping_function,
     # )
+    
+    # gsutil cp gs://eecs6893-yy3223/inputs/08fd33_4.mp4 /home/wwkb1233/airflow/dags/soccertracking/input_videos
 
     detection_tracking = BashOperator(
         task_id="detection_tracking",
