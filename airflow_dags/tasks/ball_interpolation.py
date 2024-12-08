@@ -29,8 +29,9 @@ def ball_interpolation():
             tracks = player_assigner.assign_ball_to_player(tracks)
             
             # saving the intermediate pkl
-            with open(f"{track_stubs}_${CURR_TASK}", 'wb') as f:
+            with open(f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
                 pickle.dump(tracks, f)
+        print("done ball interpolation.")
     except Exception as e:
         print(f"Error loading pickle file: {e}")
 
