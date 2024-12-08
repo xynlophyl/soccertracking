@@ -5,7 +5,7 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-# pip install matplotlib mplsoccer numpy opencv-python pandas pillow python-dotenv requests roboflow scikit-learn scipy torch torchvision tqdm ultralytics
+# pip install matplotlib mplsoccer numpy opencv-python-headless pandas pillow python-dotenv requests roboflow scikit-learn scipy torch torchvision tqdm ultralytics
 
 count = 0
 
@@ -42,13 +42,13 @@ with DAG(
 
     detection_tracking = BashOperator(
         task_id="detection_tracking",
-        bash_command="python3 /home/wwkb1233/airflow/dags/tasks/detection_tracking.py",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/detection_tracking.py",
         retries=1,
     )
 
     ball_interpolation = BashOperator(
         task_id="ball_interpolation",
-        bash_command="python3 /home/wwkb1233/airflow/dags/tasks/ball_interpolation.py",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/ball_interpolation.py",
         retries=1,
     )
 

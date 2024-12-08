@@ -64,7 +64,7 @@ def main(
     TRACKING: jersey number recognition
     """
     # ocr = JerseyOCR(batch_size = 8, device = 'cuda' if torch.cuda.is_available() else 'cpu')
-    jersey_stubs = f"stubs/jersey_track_stubs_{filename}.pkl"
+    jersey_stubs = f"./stubs/jersey_track_stubs_{filename}.pkl"
     if False:
         tracks = ocr.get_jersey_tracks(
             vod_frames, 
@@ -88,7 +88,7 @@ def main(
     # # save annotated match vod
     print('saving annotations on vod')
     
-    output_video = f"outputs/output_annotated_{filename}.avi"
+    output_video = f"./outputs/output_annotated_{filename}.avi"
     save_video(output_frames, output_video)
 
     """
@@ -99,7 +99,7 @@ def main(
     kp = KeypointDetector(pose_model)
 
     # get keypoints
-    keypoint_stubs = f"stubs/keypoint_stubs_{filename}.pkl"
+    keypoint_stubs = f"./stubs/keypoint_stubs_{filename}.pkl"
     all_keypoints = kp.get_keypoints(
         vod_frames,
         read_from_stub=True,
@@ -132,7 +132,7 @@ def main(
     """
     # save minimap transformation
     print("saving minimap")
-    output_minimap = f"outputs/output_minimap_{filename}.avi"
+    output_minimap = f"./outputs/output_minimap_{filename}.avi"
     save_video(minimap_output_frames, output_minimap)
 
 if __name__ == '__main__':

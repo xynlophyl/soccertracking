@@ -4,7 +4,7 @@ from utils import get_center_of_bbox, get_bbox_width, get_bbox_height
 
 def load_category_mapping():
 
-    with open('assets/sn_categories.json', 'r') as f:
+    with open('./assets/sn_categories.json', 'r') as f:
         category_mapping = json.load(f)
 
     return category_mapping

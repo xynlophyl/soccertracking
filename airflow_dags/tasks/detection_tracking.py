@@ -1,4 +1,4 @@
-from utils import read_video, save_video, get_video_filename
+from utils.vod_utils import read_video, save_video, get_video_filename
 
 def detection_tracking():
     input_video = "/home/wwkb1233/airflow/dags/soccertracking/input_videos/08fd33_4.mp4"
