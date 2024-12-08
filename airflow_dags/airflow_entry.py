@@ -5,8 +5,9 @@ from airflow import DAG
 from airflow.operators.bash import BashOperator
 from airflow.operators.python import PythonOperator
 
-# pip install matplotlib mplsoccer numpy opencv-python-headless pandas pillow python-dotenv requests roboflow scikit-learn scipy torch torchvision tqdm ultralytics supervision
+# pip install matplotlib mplsoccer numpy pandas pillow python-dotenv requests roboflow scikit-learn scipy torch torchvision tqdm ultralytics supervision
 # pip uninstall opencv-python
+# pip install opencv-python-headless
 
 count = 0
 
@@ -44,23 +45,24 @@ with DAG(
     detection_tracking = BashOperator(
         task_id="detection_tracking",
         bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/detection_tracking.py",
-        retries=1,
+        retries=0,
     )
 
     ball_interpolation = BashOperator(
         task_id="ball_interpolation",
         bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/ball_interpolation.py",
-        retries=1,
+        retries=0,
     )
     
-    output_annotated_video = BashOperator(
-        task_id="output_annotated_video",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
-        retries=1,
-    )
+    # output_annotated_video = BashOperator(
+    #     task_id="output_annotated_video",
+    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
+    #     retries=0,
+    # )
 
     detection_tracking >> ball_interpolation
-    ball_interpolation >> output_annotated_video
+    # ball_interpolation >> output_annotated_video
+
     # t1 >> [t2, t3, t4, t5]
     # t2 >> t6
     # t3 >> [t7, t12]
