@@ -30,7 +30,8 @@ def output_annotated_video():
             print('saving annotations on vod')
             
             output_video = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.avi"
-            save_video(output_frames, output_video)
+            # save_video(output_frames, output_video)
+            print("output path:", output_video)
 
         print("done output annotated video.")
     except Exception as e:
