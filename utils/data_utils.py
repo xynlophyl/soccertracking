@@ -1,10 +1,17 @@
+import os
 import json
 import pandas as pd
 from utils import get_center_of_bbox, get_bbox_width, get_bbox_height
 
 def load_category_mapping():
-
-    with open('/home/wwkb1233/airflow/dags/soccertracking/assets/sn_categories.json', 'r') as f:
+    # Check if the environment variable GCP_PROJECT_PATH is set
+    gcp_project_path = os.getenv("GCP_PROJECT_PATH")
+    if gcp_project_path:
+        # Use the GCP_PROJECT_PATH environment variable for the absolute path
+        file_path = os.path.join(gcp_project_path, 'assets/sn_categories.json')
+    else: # local
+        file_path = './assets/sn_categories.json'
+    with open(file_path, 'r') as f:
         category_mapping = json.load(f)
 
     return category_mapping
