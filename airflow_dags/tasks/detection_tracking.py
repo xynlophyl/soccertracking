@@ -1,16 +1,17 @@
 import os
-from utils.vod_utils import read_video, get_video_filename
+from utils.vod_utils import read_video
 from tracker.tracker import Tracker
-import pickle
+import sys
 
 def detection_tracking():
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
     CURR_TASK = "detection_tracking"
 
-    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+    input_video_path = sys.argv[1]
+    filename = sys.argv[2]
     detect_model = f"{GCP_PROJECT_PATH}/models/detect/best.pt"
     vod_frames = read_video(input_video_path)
-    filename = get_video_filename(input_video_path)
+
     
     tracker = Tracker(
         model_path=detect_model

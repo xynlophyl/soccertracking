@@ -1,15 +1,17 @@
 import os
-from utils.vod_utils import read_video, get_video_filename
+import sys
+from utils.vod_utils import read_video
 from pitchlocalization.detect import KeypointDetector
 
 def keypoint_detection():
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
     CURR_TASK = "keypoint_detection"
 
-    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+
+    input_video_path = sys.argv[1]
+    filename = sys.argv[2]
     pose_model = f"{GCP_PROJECT_PATH}/models/pose/best.pt"
     vod_frames = read_video(input_video_path)
-    filename = get_video_filename(input_video_path)
 
     kp = KeypointDetector(pose_model)
 

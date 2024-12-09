@@ -1,17 +1,18 @@
 import os
 import pickle
-from utils.vod_utils import read_video, save_video, get_video_filename
+import sys
+from utils.vod_utils import read_video, save_video
 from tracker.tracker import Tracker
 
 def output_annotated_video():
+    input_video_path = sys.argv[1]
+    filename = sys.argv[2]
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
         PREV_TASK = "merge_tracks"
-        
-        input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+
         detect_model = f"{GCP_PROJECT_PATH}/models/detect/best.pt"
         vod_frames = read_video(input_video_path)
-        filename = get_video_filename(input_video_path)
         track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
         
         tracker = Tracker(

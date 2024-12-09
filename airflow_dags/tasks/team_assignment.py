@@ -1,16 +1,18 @@
-from utils.vod_utils import read_video, get_video_filename
+from utils.vod_utils import read_video
 import os
 import pickle
+import sys
 from team_assigner.team_assigner import TeamAssigner
 
 def team_assignment():
+    input_video_path = sys.argv[1]
+    filename = sys.argv[2]
+
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
     PREV_TASK = "ball_interpolation"
     CURR_TASK = "team_assignment"
     
-    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
     vod_frames = read_video(input_video_path)
-    filename = get_video_filename(input_video_path)
     track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
 
     try:

@@ -1,17 +1,19 @@
 import os
 import pickle
 import numpy as np
-from utils.vod_utils import read_video, get_video_filename
+import sys
+from utils.vod_utils import read_video
 from pitchlocalization.view_transformer import ViewTransformer
 
 def perspective_transformation():
+    input_video_path = sys.argv[1]
+    filename = sys.argv[2]
+
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
     PREV_TASK = "keypoint_detection"
     CURR_TASK = "perspective_transformation"
 
-    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
     vod_frames = read_video(input_video_path)
-    filename = get_video_filename(input_video_path)
     
     keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/keypoint_stubs_{filename}.pkl"
     track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_ball_interpolation.pkl"

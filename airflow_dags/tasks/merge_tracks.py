@@ -1,6 +1,6 @@
 import os
+import sys
 import pickle
-from utils.vod_utils import get_video_filename
 
 def merge_dicts(dict1, dict2):
     for track_type in dict1: # players/referees/ball
@@ -18,10 +18,10 @@ def merge_dicts(dict1, dict2):
     return dict1
 
 def merge_tracks():
+    input_video_path = sys.argv[1]
+    filename = sys.argv[2]
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-        input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-        filename = get_video_filename(input_video_path)
         
         PREV_TASK_1 = "team_assignment"
         track_stubs1 = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK_1}.pkl"
