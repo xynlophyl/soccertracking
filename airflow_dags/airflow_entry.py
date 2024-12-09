@@ -45,32 +45,32 @@ with DAG(
     # gsutil cp gs://eecs6893-yy3223/inputs/08fd33_4.mp4 /home/wwkb1233/airflow/dags/soccertracking/input_videos
 
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-    input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-    filename = get_video_filename(input_video)
+    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+    filename = get_video_filename(input_video_path)
 
     ### tracking stuff
 
     detection_tracking = BashOperator(
         task_id="detection_tracking",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/detection_tracking.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/detection_tracking.py",
         retries=0,
     )
 
     ball_interpolation = BashOperator(
         task_id="ball_interpolation",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/ball_interpolation.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/ball_interpolation.py",
         retries=0,
     )
     
     team_assignment = BashOperator(
         task_id="team_assignment",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/team_assignment.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/team_assignment.py",
         retries=0,
     )
     
     output_annotated_video = BashOperator(
         task_id="output_annotated_video",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/output_annotated_video.py",
         retries=0,
     )
     
@@ -78,33 +78,39 @@ with DAG(
 
     keypoint_detection = BashOperator(
         task_id="keypoint_detection",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/keypoint_detection.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/keypoint_detection.py",
         retries=0,
     )
 
     perspective_transformation = BashOperator(
         task_id="perspective_transformation",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/perspective_transformation.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/perspective_transformation.py",
         retries=0,
     )
     
     output_minimap_video = BashOperator(
         task_id="output_minimap_video",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_minimap_video.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/output_minimap_video.py",
         retries=0,
     )
     
     ### utils
     
+    transfer_input_file = BashOperator(
+        task_id="transfer_output_files",
+        bash_command=f"gsutil cp gs://eecs6893-yy3223/inputs/input.mp4 {GCP_PROJECT_PATH}/input_videos",
+        retries=0,
+    )
+    
     merge_tracks = BashOperator(
         task_id="merge_tracks",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/merge_tracks.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/merge_tracks.py",
         retries=0,
     )
     
     output_combined_video = BashOperator(
         task_id="output_combined_video",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_combined_video.py",
+        bash_command=f"python3 {GCP_PROJECT_PATH}/airflow_dags/tasks/output_combined_video.py",
         retries=0,
     )
 

@@ -8,7 +8,7 @@ from tracker import Tracker, PlayerBallAssigner
 from utils import read_video, save_video, get_video_filename
 
 def main(
-    input_video = "input_videos/08fd33_4.mp4",
+    input_video_path = "input_videos/08fd33_4.mp4",
     detect_model = "models/detect/best.pt",
     pose_model = "models/pose/best.pt",
 ):
@@ -17,9 +17,9 @@ def main(
     INITIALIZATION: load video
     """
     print('loading video')
-    vod_frames = read_video(input_video)
+    vod_frames = read_video(input_video_path)
 
-    filename = get_video_filename(input_video)
+    filename = get_video_filename(input_video_path)
 
     """
     TRACKING: initial detection and tracking

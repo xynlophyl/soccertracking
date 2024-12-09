@@ -8,9 +8,9 @@ def output_minimap_video():
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
         PREV_TASK = "merge_tracks"
         
-        input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-        vod_frames = read_video(input_video)
-        filename = get_video_filename(input_video)
+        input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+        vod_frames = read_video(input_video_path)
+        filename = get_video_filename(input_video_path)
         track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
 
         with open(track_stubs, 'rb') as f:

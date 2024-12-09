@@ -9,9 +9,9 @@ def perspective_transformation():
     PREV_TASK = "keypoint_detection"
     CURR_TASK = "perspective_transformation"
 
-    input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-    vod_frames = read_video(input_video)
-    filename = get_video_filename(input_video)
+    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+    vod_frames = read_video(input_video_path)
+    filename = get_video_filename(input_video_path)
     
     keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/keypoint_stubs_{filename}.pkl"
     track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_ball_interpolation.pkl"

@@ -20,8 +20,8 @@ def merge_dicts(dict1, dict2):
 def merge_tracks():
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-        input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-        filename = get_video_filename(input_video)
+        input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+        filename = get_video_filename(input_video_path)
         
         PREV_TASK_1 = "team_assignment"
         track_stubs1 = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK_1}.pkl"

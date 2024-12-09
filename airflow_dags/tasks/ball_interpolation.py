@@ -9,9 +9,9 @@ def ball_interpolation():
     PREV_TASK = "detection_tracking"
     CURR_TASK = "ball_interpolation"
     
-    input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
     detect_model = f"{GCP_PROJECT_PATH}/models/detect/best.pt"
-    filename = get_video_filename(input_video)
+    filename = get_video_filename(input_video_path)
     track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
     
     tracker = Tracker(

@@ -65,8 +65,8 @@ def output_combined_video(clip_video_path, minimap_video_path, output_path, mini
 if __name__ == "__main__":
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-        input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-        filename = get_video_filename(input_video)
+        input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+        filename = get_video_filename(input_video_path)
             
         clip_video_path = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.mp4"  # Path to the first video
         minimap_video_path = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.mp4"  # Path to the second video

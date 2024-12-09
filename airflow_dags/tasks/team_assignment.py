@@ -8,9 +8,9 @@ def team_assignment():
     PREV_TASK = "ball_interpolation"
     CURR_TASK = "team_assignment"
     
-    input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-    vod_frames = read_video(input_video)
-    filename = get_video_filename(input_video)
+    input_video_path = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+    vod_frames = read_video(input_video_path)
+    filename = get_video_filename(input_video_path)
     track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
 
     try:
