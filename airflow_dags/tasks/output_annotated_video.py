@@ -29,7 +29,7 @@ def output_annotated_video():
             # save annotated match vod
             print('saving annotations on vod')
             
-            output_video = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.avi"
+            output_video = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.mp4"
             save_video(output_frames, output_video)
             print("output path:", output_video)
 

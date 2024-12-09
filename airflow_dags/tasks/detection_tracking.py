@@ -23,10 +23,6 @@ def detection_tracking():
         read_from_stub=True,
         stub_path=track_stubs
     )
-    
-    # saving the intermediate pkl
-    with open(f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
-        pickle.dump(tracks, f)
         
     print("done detection and tracking.")
     
