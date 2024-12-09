@@ -3,6 +3,7 @@ import cv2
 # from mplsoccer.pitch import Pitch
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
 class PitchFrame():
 
@@ -46,8 +47,14 @@ class PitchFrame():
         """
         returns np representation of mplsoccer pitch plot
         """
+        gcp_project_path = os.getenv("GCP_PROJECT_PATH")
+        if gcp_project_path:
+            # Use the GCP_PROJECT_PATH environment variable for the absolute path
+            file_path = os.path.join(gcp_project_path, 'assets/mplpitch.png')
+        else: # local
+            file_path = './assets/mplpitch.png'
 
-        pitch_frame = cv2.imread('./assets/mplpitch.png')
+        pitch_frame = cv2.imread(file_path)
 
         return pitch_frame
 
