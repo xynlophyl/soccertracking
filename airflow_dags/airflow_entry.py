@@ -1,5 +1,7 @@
+import os
 from datetime import datetime, timedelta
 from textwrap import dedent
+from utils.vod_utils import get_video_filename
 import time
 from airflow import DAG
 from airflow.operators.bash import BashOperator
@@ -22,7 +24,7 @@ default_args = {
     "email": ["yy3223@columbia.edu"],
     "email_on_failure": False,
     "email_on_retry": False,
-    "retries": 1,
+    "retries": 0,
     "retry_delay": timedelta(seconds=30),
 }
 
@@ -41,6 +43,10 @@ with DAG(
     # )
     
     # gsutil cp gs://eecs6893-yy3223/inputs/08fd33_4.mp4 /home/wwkb1233/airflow/dags/soccertracking/input_videos
+
+    GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
+    input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+    filename = get_video_filename(input_video)
 
     ### tracking stuff
 
@@ -95,9 +101,22 @@ with DAG(
         bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/merge_tracks.py",
         retries=0,
     )
+    
+    output_combined_video = BashOperator(
+        task_id="output_combined_video",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_combined_video.py",
+        retries=0,
+    )
+
+    transfer_output_files = BashOperator(
+        task_id="transfer_output_files",
+        bash_command=f"gsutil cp -r {GCP_PROJECT_PATH}/outputs gs://eecs6893-yy3223/",
+        retries=0,
+    )
 
     detection_tracking >> ball_interpolation >> team_assignment
     [keypoint_detection, ball_interpolation] >> perspective_transformation
     [team_assignment, perspective_transformation] >> merge_tracks
     merge_tracks >> [output_annotated_video, output_minimap_video]
-    # [output_annotated_video, output_minimap_video] >> output_combined_video
+    [output_annotated_video, output_minimap_video] >> output_combined_video
+    output_combined_video >> transfer_output_files
