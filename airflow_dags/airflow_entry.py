@@ -44,29 +44,29 @@ with DAG(
 
     ### tracking stuff
 
-    detection_tracking = BashOperator(
-        task_id="detection_tracking",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/detection_tracking.py",
-        retries=0,
-    )
+    # detection_tracking = BashOperator(
+    #     task_id="detection_tracking",
+    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/detection_tracking.py",
+    #     retries=0,
+    # )
 
-    ball_interpolation = BashOperator(
-        task_id="ball_interpolation",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/ball_interpolation.py",
-        retries=0,
-    )
+    # ball_interpolation = BashOperator(
+    #     task_id="ball_interpolation",
+    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/ball_interpolation.py",
+    #     retries=0,
+    # )
     
-    team_assignment = BashOperator(
-        task_id="team_assignment",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/team_assignment.py",
-        retries=0,
-    )
+    # team_assignment = BashOperator(
+    #     task_id="team_assignment",
+    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/team_assignment.py",
+    #     retries=0,
+    # )
     
-    output_annotated_video = BashOperator(
-        task_id="output_annotated_video",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
-        retries=0,
-    )
+    # output_annotated_video = BashOperator(
+    #     task_id="output_annotated_video",
+    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
+    #     retries=0,
+    # )
     
     ### minimap stuff
 
@@ -82,11 +82,11 @@ with DAG(
         retries=0,
     )
     
-    output_minimap_video = BashOperator(
-        task_id="output_minimap_video",
-        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_minimap_video.py",
-        retries=0,
-    )
+    # output_minimap_video = BashOperator(
+    #     task_id="output_minimap_video",
+    #     bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_minimap_video.py",
+    #     retries=0,
+    # )
 
     # detection_tracking >> ball_interpolation >> team_assignment
     keypoint_detection >> perspective_transformation

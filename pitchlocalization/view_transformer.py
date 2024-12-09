@@ -38,7 +38,6 @@ class ViewTransformer():
         return transformed_points.reshape(-1, 2).astype(np.float32)
 
     def transform_all_points(self, frames, tracks, all_keypoints):
-        print("all key", all_keypoints)
         for frame_num, frame in enumerate(frames):
 
             # get pitch keypoint detections for current frame
@@ -50,14 +49,18 @@ class ViewTransformer():
             # get player and ball tracks for current frame
             player_tracks = tracks['players'][frame_num]
             ball_tracks = tracks['ball'][frame_num]
-            print(player_tracks, ball_tracks)
 
             # get player and ball position coordinates using bounding boxes
             player_positions = [p['bbox'] for p in player_tracks.values()]
             ball_positions = [b['bbox'] for b in ball_tracks.values()]
+            print("pre player_positions", player_positions)
+            print("pre ball_positions", ball_positions)
 
             player_positions = np.array([get_bottom_center_of_bbox(bbox) for bbox in player_positions])
             ball_positions = np.array([get_bottom_center_of_bbox(bbox) for bbox in ball_positions])
+            
+            print("post player_positions", player_positions)
+            print("post ball_positions", ball_positions)
 
             # transform object positions to 2D plane
             transformed_player_positions = self.transform_points(player_positions, m)
