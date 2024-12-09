@@ -120,6 +120,7 @@ with DAG(
         retries=0,
     )
 
+    transfer_input_file >> [detection_tracking, keypoint_detection]
     detection_tracking >> ball_interpolation >> team_assignment
     [keypoint_detection, ball_interpolation] >> perspective_transformation
     [team_assignment, perspective_transformation] >> merge_tracks
