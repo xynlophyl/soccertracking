@@ -6,7 +6,7 @@ from pitchlocalization.pitch_frame import PitchFrame
 def output_minimap_video():
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-        PREV_TASK = "merge_tracks"
+        PREV_TASK = "team_assignment"
         
         input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
         vod_frames = read_video(input_video)
