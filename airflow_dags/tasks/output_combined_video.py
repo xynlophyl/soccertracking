@@ -64,16 +64,19 @@ def output_combined_video(clip_video_path, minimap_video_path, output_path, mini
     cv2.destroyAllWindows()
 
 if __name__ == "__main__":
-    GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-    input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
-    filename = get_video_filename(input_video)
-        
-    clip_video_path = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.mp4"  # Path to the first video
-    minimap_video_path = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.mp4"  # Path to the second video
-    output_path = f"{GCP_PROJECT_PATH}/outputs/output_combined_{filename}.mp4"  # Path to save the combined video
+    try:
+        GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
+        input_video = f"{GCP_PROJECT_PATH}/input_videos/08fd33_4.mp4"
+        filename = get_video_filename(input_video)
+            
+        clip_video_path = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.mp4"  # Path to the first video
+        minimap_video_path = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.mp4"  # Path to the second video
+        output_path = f"{GCP_PROJECT_PATH}/outputs/output_combined_{filename}.mp4"  # Path to save the combined video
 
-    # Define the size and position for minimap video
-    minimap_size = (400, 300)  # Width x Height of the resized minimap video
+        # Define the size and position for minimap video
+        minimap_size = (400, 300)  # Width x Height of the resized minimap video
 
-    output_combined_video(clip_video_path, minimap_video_path, output_path, minimap_size)
-    print("Video processing complete. Saved as:", output_path)
+        output_combined_video(clip_video_path, minimap_video_path, output_path, minimap_size)
+        print("Video processing complete. Saved as:", output_path)
+    except Exception as e:
+        print(f"Error outputing file: {e}")
