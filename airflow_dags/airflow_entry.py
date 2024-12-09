@@ -42,6 +42,8 @@ with DAG(
     
     # gsutil cp gs://eecs6893-yy3223/inputs/08fd33_4.mp4 /home/wwkb1233/airflow/dags/soccertracking/input_videos
 
+    ### tracking stuff
+
     detection_tracking = BashOperator(
         task_id="detection_tracking",
         bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/detection_tracking.py",
@@ -65,10 +67,24 @@ with DAG(
         bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_annotated_video.py",
         retries=0,
     )
+    
+    ### minimap stuff
 
-    detection_tracking >> ball_interpolation
-    ball_interpolation >> team_assignment
-    team_assignment >> output_annotated_video
+    keypoint_detection = BashOperator(
+        task_id="keypoint_detection",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/keypoint_detection.py",
+        retries=0,
+    )
+
+    perspective_transformation = BashOperator(
+        task_id="perspective_transformation",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/perspective_transformation.py",
+        retries=0,
+    )
+
+    detection_tracking >> ball_interpolation >> team_assignment
+    keypoint_detection >> perspective_transformation
+    [team_assignment, perspective_transformation] >> output_annotated_video
 
     # t1 >> [t2, t3, t4, t5]
     # t2 >> t6
