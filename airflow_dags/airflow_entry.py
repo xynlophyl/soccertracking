@@ -81,10 +81,17 @@ with DAG(
         bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/perspective_transformation.py",
         retries=0,
     )
+    
+    output_minimap_video = BashOperator(
+        task_id="output_minimap_video",
+        bash_command="python3 /home/wwkb1233/airflow/dags/soccertracking/airflow_dags/tasks/output_minimap_video.py",
+        retries=0,
+    )
 
-    detection_tracking >> ball_interpolation >> team_assignment
+    # detection_tracking >> ball_interpolation >> team_assignment
     keypoint_detection >> perspective_transformation
-    [team_assignment, perspective_transformation] >> output_annotated_video
+    # perspective_transformation >> output_minimap_video
+    # [team_assignment, perspective_transformation] >> output_annotated_video
 
     # t1 >> [t2, t3, t4, t5]
     # t2 >> t6

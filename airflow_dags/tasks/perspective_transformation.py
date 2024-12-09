@@ -29,6 +29,7 @@ def perspective_transformation():
             vt = ViewTransformer(mpl_keypoints, conf = 0.5)
             
             # transform tracking coordinates to 2D plane
+            print(tracks)
             tracks = vt.transform_all_points(vod_frames, tracks, all_keypoints)
             
             # saving the intermediate pkl
@@ -37,7 +38,7 @@ def perspective_transformation():
             
         print("done perspective transformation.")
     except Exception as e:
-        print(f"Error loading pickle file: {e}")
+        print(f"Error: {e}")
 
 if __name__ == '__main__':
     perspective_transformation()
