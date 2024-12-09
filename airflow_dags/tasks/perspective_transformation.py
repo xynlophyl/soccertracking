@@ -14,7 +14,7 @@ def perspective_transformation():
     filename = get_video_filename(input_video)
     
     keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/keypoint_stubs_{filename}.pkl"
-    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}.pkl"
+    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_team_assignment.pkl"
 
     try:
         with open(keypoint_stubs, 'rb') as f:
@@ -29,7 +29,6 @@ def perspective_transformation():
             vt = ViewTransformer(mpl_keypoints, conf = 0.5)
             
             # transform tracking coordinates to 2D plane
-            print(tracks)
             tracks = vt.transform_all_points(vod_frames, tracks, all_keypoints)
             
             # saving the intermediate pkl

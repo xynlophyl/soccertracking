@@ -53,14 +53,14 @@ class ViewTransformer():
             # get player and ball position coordinates using bounding boxes
             player_positions = [p['bbox'] for p in player_tracks.values()]
             ball_positions = [b['bbox'] for b in ball_tracks.values()]
-            print("pre player_positions", player_positions)
-            print("pre ball_positions", ball_positions)
+            # print("pre player_positions", player_positions)
+            # print("pre ball_positions", ball_positions)
 
             player_positions = np.array([get_bottom_center_of_bbox(bbox) for bbox in player_positions])
             ball_positions = np.array([get_bottom_center_of_bbox(bbox) for bbox in ball_positions])
             
-            print("post player_positions", player_positions)
-            print("post ball_positions", ball_positions)
+            # print("post player_positions", player_positions)
+            # print("post ball_positions", ball_positions)
 
             # transform object positions to 2D plane
             transformed_player_positions = self.transform_points(player_positions, m)
