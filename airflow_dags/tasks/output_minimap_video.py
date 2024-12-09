@@ -22,7 +22,7 @@ def output_minimap_video():
 
             # save minimap transformation
             print("saving minimap")
-            output_minimap = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.mp4"
+            output_minimap = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.avi"
             save_video(minimap_output_frames, output_minimap)
             print("output path:", output_minimap)
 

@@ -68,9 +68,9 @@ if __name__ == "__main__":
     try:
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
             
-        clip_video_path = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.mp4"  # Path to the first video
-        minimap_video_path = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.mp4"  # Path to the second video
-        output_path = f"{GCP_PROJECT_PATH}/outputs/output_combined_{filename}.mp4"  # Path to save the combined video
+        clip_video_path = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.avi"  # Path to the first video
+        minimap_video_path = f"{GCP_PROJECT_PATH}/outputs/output_minimap_{filename}.avi"  # Path to the second video
+        output_path = f"{GCP_PROJECT_PATH}/outputs/output_combined_{filename}.avi"  # Path to save the combined video
 
         # Define the size and position for minimap video
         minimap_size = (400, 300)  # Width x Height of the resized minimap video
