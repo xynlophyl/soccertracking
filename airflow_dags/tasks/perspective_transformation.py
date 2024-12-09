@@ -14,7 +14,7 @@ def perspective_transformation():
     filename = get_video_filename(input_video)
     
     keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/keypoint_stubs_{filename}.pkl"
-    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_team_assignment.pkl"
+    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_ball_interpolation.pkl"
 
     try:
         with open(keypoint_stubs, 'rb') as f:
