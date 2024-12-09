@@ -61,7 +61,6 @@ def output_combined_video(clip_video_path, minimap_video_path, output_path, mini
     clip_video.release()
     minimap_video.release()
     out.release()
-    cv2.destroyAllWindows()
 
 if __name__ == "__main__":
     try:
