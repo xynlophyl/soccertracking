@@ -17,7 +17,6 @@ def output_annotated_video():
         tracker = Tracker(
             model_path=detect_model
         )
-    
 
         with open(track_stubs, 'rb') as f:
             tracks = pickle.load(f)
