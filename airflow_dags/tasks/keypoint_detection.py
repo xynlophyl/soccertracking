@@ -14,7 +14,7 @@ def keypoint_detection():
     kp = KeypointDetector(pose_model)
 
     # get keypoints
-    keypoint_stubs = f"./stubs/keypoint_stubs_{filename}.pkl"
+    keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/keypoint_stubs_{filename}.pkl"
     all_keypoints = kp.get_keypoints(
         vod_frames,
         read_from_stub=True,
