@@ -33,6 +33,7 @@ with DAG(
     default_args=default_args,
     description="eecs6893 soccer project",
     start_date=datetime(2021, 1, 1),
+    params={"filename": "input"},
     catchup=False,
     tags=["eecs6893"],
 ) as dag:
@@ -45,7 +46,7 @@ with DAG(
     # gsutil cp gs://eecs6893-yy3223/inputs/08fd33_4.mp4 /home/wwkb1233/airflow/dags/soccertracking/input_videos
 
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
-    filename = "input"
+    filename = dag.params["filename"]
     input_video_path = f"{GCP_PROJECT_PATH}/input_videos/{filename}.mp4"
 
     ### tracking stuff
