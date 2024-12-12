@@ -15,8 +15,8 @@ def perspective_transformation():
 
     vod_frames = read_video(input_video_path)
     
-    keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/keypoint_stubs_{filename}.pkl"
-    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_ball_interpolation.pkl"
+    keypoint_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/keypoint_stubs_{filename}.pkl"
+    track_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_ball_interpolation.pkl"
 
     try:
         with open(keypoint_stubs, 'rb') as f:
@@ -34,7 +34,7 @@ def perspective_transformation():
             tracks = vt.transform_all_points(vod_frames, tracks, all_keypoints)
             
             # saving the intermediate pkl
-            with open(f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
+            with open(f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
                 pickle.dump(tracks, f)
             
         print("done perspective transformation.")

@@ -13,7 +13,7 @@ def output_annotated_video():
 
         detect_model = f"{GCP_PROJECT_PATH}/models/detect/best.pt"
         vod_frames = read_video(input_video_path)
-        track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
+        track_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{PREV_TASK}.pkl"
         
         tracker = Tracker(
             model_path=detect_model
@@ -29,7 +29,7 @@ def output_annotated_video():
             # save annotated match vod
             print('saving annotations on vod')
             
-            output_video = f"{GCP_PROJECT_PATH}/outputs/output_annotated_{filename}.avi"
+            output_video = f"{GCP_PROJECT_PATH}/outputs/{filename}/output_annotated_{filename}.avi"
             save_video(output_frames, output_video)
             print("output path:", output_video)
 

@@ -13,7 +13,7 @@ def ball_interpolation():
     input_video_path = sys.argv[1]
     filename = sys.argv[2]
     detect_model = f"{GCP_PROJECT_PATH}/models/detect/best.pt"
-    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
+    track_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{PREV_TASK}.pkl"
     
     tracker = Tracker(
         model_path=detect_model
@@ -30,7 +30,7 @@ def ball_interpolation():
             tracks = player_assigner.assign_ball_to_player(tracks)
             
             # saving the intermediate pkl
-            with open(f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
+            with open(f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
                 pickle.dump(tracks, f)
         print("done ball interpolation.")
     except Exception as e:

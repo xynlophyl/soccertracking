@@ -18,7 +18,7 @@ def detection_tracking():
     )
     
     # track object across frames
-    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl"
+    track_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{CURR_TASK}.pkl"
     tracks = tracker.get_object_tracks(
         vod_frames,
         read_from_stub=True,

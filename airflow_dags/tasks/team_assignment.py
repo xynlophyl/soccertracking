@@ -13,7 +13,7 @@ def team_assignment():
     CURR_TASK = "team_assignment"
     
     vod_frames = read_video(input_video_path)
-    track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK}.pkl"
+    track_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{PREV_TASK}.pkl"
 
     try:
         with open(track_stubs, 'rb') as f:
@@ -28,7 +28,7 @@ def team_assignment():
             tracks = team_assigner.get_goalkeeper_team(vod_frames, tracks)
             
             # saving the intermediate pkl
-            with open(f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
+            with open(f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{CURR_TASK}.pkl", 'wb') as f:
                 pickle.dump(tracks, f)
 
         print("done team assignment.")

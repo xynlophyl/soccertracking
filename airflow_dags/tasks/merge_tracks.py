@@ -24,12 +24,12 @@ def merge_tracks():
         GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
         
         PREV_TASK_1 = "team_assignment"
-        track_stubs1 = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK_1}.pkl"
+        track_stubs1 = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{PREV_TASK_1}.pkl"
         PREV_TASK_2 = "perspective_transformation"
-        track_stubs2 = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{PREV_TASK_2}.pkl"
+        track_stubs2 = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{PREV_TASK_2}.pkl"
         
         CURR_TASK = "merge_tracks"
-        final_track_stubs = f"{GCP_PROJECT_PATH}/stubs/track_stubs_{filename}_{CURR_TASK}.pkl"
+        final_track_stubs = f"{GCP_PROJECT_PATH}/stubs/{filename}/track_stubs_{filename}_{CURR_TASK}.pkl"
 
         with open(track_stubs1, 'rb') as f1:
             data1 = pickle.load(f1)
