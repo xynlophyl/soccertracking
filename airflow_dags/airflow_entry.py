@@ -11,13 +11,6 @@ from airflow.operators.python import PythonOperator
 # pip uninstall opencv-python
 # pip install opencv-python-headless
 
-count = 0
-
-
-def correct_sleeping_function():
-    pass
-
-
 default_args = {
     "owner": "yy3223",
     "depends_on_past": False,
@@ -37,12 +30,6 @@ with DAG(
     catchup=False,
     tags=["eecs6893"],
 ) as dag:
-
-    # t4 = PythonOperator(
-    #     task_id='t4',
-    #     python_callable=correct_sleeping_function,
-    # )
-    
     # gsutil cp gs://eecs6893-yy3223/inputs/08fd33_4.mp4 /home/wwkb1233/airflow/dags/soccertracking/input_videos
 
     GCP_PROJECT_PATH = os.getenv("GCP_PROJECT_PATH", "/home/wwkb1233/airflow/dags/soccertracking")
