@@ -86,7 +86,7 @@ with DAG(
     
     transfer_input_file = BashOperator(
         task_id="transfer_input_file",
-        bash_command=f"gsutil cp gs://eecs6893-yy3223/inputs/{filename}.mp4 {GCP_PROJECT_PATH}/input_videos",
+        bash_command=f"gsutil cp gs://eecs6893-yy3223/inputs/{filename}.mp4 {GCP_PROJECT_PATH}/input_videos && mkdir {GCP_PROJECT_PATH}/stubs/{filename} && mkdir {GCP_PROJECT_PATH}/outputs/{filename}",
         retries=0,
     )
     
