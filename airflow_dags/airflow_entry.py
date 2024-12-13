@@ -86,7 +86,7 @@ with DAG(
     
     transfer_input_file = BashOperator(
         task_id="transfer_input_file",
-        bash_command=f"gsutil cp gs://eecs6893-yy3223/inputs/{filename}.mp4 {GCP_PROJECT_PATH}/input_videos && mkdir {GCP_PROJECT_PATH}/stubs/{filename} && mkdir {GCP_PROJECT_PATH}/outputs/{filename}",
+        bash_command=f"gsutil cp gs://eecs6893-yy3223/inputs/{filename}.mp4 {GCP_PROJECT_PATH}/input_videos && mkdir -p {GCP_PROJECT_PATH}/stubs/{filename} && mkdir -p {GCP_PROJECT_PATH}/outputs/{filename}",
         retries=0,
     )
     
@@ -104,7 +104,7 @@ with DAG(
 
     transfer_output_files = BashOperator(
         task_id="transfer_output_files",
-        bash_command=f"gsutil cp -r {GCP_PROJECT_PATH}/outputs/{filename} gs://eecs6893-yy3223/outputs && gsutil cp -r {GCP_PROJECT_PATH}/stubs/{filename} gs://eecs6893-yy3223/outputs ",
+        bash_command=f"gsutil cp -r {GCP_PROJECT_PATH}/outputs/{filename} gs://eecs6893-yy3223/outputs && gsutil cp -r {GCP_PROJECT_PATH}/stubs/{filename} gs://eecs6893-yy3223/outputs",
         retries=0,
     )
 
