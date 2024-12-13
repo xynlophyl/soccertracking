@@ -104,7 +104,7 @@ with DAG(
 
     transfer_output_files = BashOperator(
         task_id="transfer_output_files",
-        bash_command=f"gsutil cp -r {GCP_PROJECT_PATH}/outputs/{filename} gs://eecs6893-yy3223/outputs && gsutil cp -r {GCP_PROJECT_PATH}/stubs/{filename} gs://eecs6893-yy3223/outputs",
+        bash_command=f"gsutil cp -r {GCP_PROJECT_PATH}/outputs/{filename} gs://eecs6893-yy3223/outputs && gsutil cp -r {GCP_PROJECT_PATH}/stubs/{filename} gs://eecs6893-yy3223/stubs",
         retries=0,
     )
 
