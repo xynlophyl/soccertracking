@@ -1,6 +1,7 @@
 # soccertracking
 
 An implementation of soccer match game state reconstruction, inspired by the [SoccerNet GSR Challenge](https://www.soccer-net.org/tasks/game-state-reconstruction).
+Here is a video introducing this implementation of the project: [Video Introduction](https://www.youtube.com/watch?v=CZQO74d7dh8).
 
 <br>
 <p align="center">
@@ -21,7 +22,6 @@ This project uses a multimodal architecture to track key objects (players, refer
 - https://arxiv.org/abs/2404.11335
 
 <br>
-TODO
 - object detection: tracking, color/team assignments, ball position interpolation
 - pitch localization: camera movement estimators, perspective transformations, position smoothing
 - visualizations: raw annotations, 2D minimap view, player heatmaps, speed estimators 
