@@ -18,10 +18,13 @@ This project uses a multimodal architecture to track key objects (players, refer
 - pitch keypoint detection: YOLOv5-pose; TVCalib
 - pitch localization: homography transformations
 
+
 ## References
 - https://arxiv.org/abs/2404.11335
 
 <br>
-- object detection: tracking, color/team assignments, ball position interpolation
-- pitch localization: camera movement estimators, perspective transformations, position smoothing
-- visualizations: raw annotations, 2D minimap view, player heatmaps, speed estimators 
+
+TODO
+- object detection: 
+- pitch localization: position smoothing
+- visualizations: player heatmaps, speed estimators 
